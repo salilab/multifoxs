@@ -1,3 +1,5 @@
 Import('env')
 
 env.InstallPerl(['multifoxs.pm'])
+env.InstallHTML(['logo.png'])
+

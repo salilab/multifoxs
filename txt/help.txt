@@ -1,1 +1,86 @@
-<h1>Help</h1>
+<h3><font color='#B22222'>MultiFoXS Help Page</font></h3>
+
+<div id=resulttable>
+
+
+<table><tr><td align="left">
+<H3><font color='#B22222'>Input Fields</font></H3>
+</td></tr></table>
+
+
+<table>
+<tr><td align ="left"> 
+
+
+<ul>
+<li><b><font color=blue>Input protein:</font></b> it is possible to
+specify the PDB code of the input protein <b>or</b> upload file in PDB
+format. Each code is a four character PDB ID, followed by a colon and
+a list of chain IDs, e.g. 2pka:AB. If no chain IDs are given, all the
+chains of the PDB file are used. 
+
+<p><b><font color=red> IMPORTANT! </font> Your input protein should contain all the atoms with proper geometry (bond length, bond angles, no steric clashes).</b> Missing fragments can be filled in using <a href="http://salilab.org/modeller/"> MODELLER </a> or <a href="https://modbase.compbio.ucsf.edu/allosmod-foxs/"> AllosMod-FoXS webserver</a>.
+
+
+<li><b><font color=blue>Flexible residues:</font></b> a list of residues that their backbone phi and psi angles are sampled by the sampling algorithm. Those residues divide the input protein into rigid bodies and linkers. This list should contain linkers between the domains. You can use <a href="http://bioinfo3d.cs.tau.ac.il/HingeProt"> HingeProt </a> to identify hinge regions. Please do not include flexible loops, as the server cannot handle cycles, the current implementation is limited to tree-like topologies.
+
+<p> The file has to be in the following format:<br>
+[residue index] [chain ID][newline]<br>
+...
+<br><br>
+(if there is no chain ID then residue index is sufficient).
+
+<p> Example: for calmodulin (PDB 4cln), HingeProt detects a hinge region between residues 77 and 78. Therefore, we will designate residues 74 to 82 as flexible residues:<br> 
+74 A<br>
+75 A<br>
+76 A<br>
+77 A<br>
+78 A<br>
+79 A<br>
+80 A<br>
+81 A<br>
+82 A<br>
+
+<li><b><font color=blue>SAXS profile: </font></b>
+A file with experimental SAXS profile. The experimental file should have 3 columns: q, I(q) and error: <br><br>
+
+#    q  intensity  error  <br>
+0.00000 3280247.73 1904.037 <br>
+0.00060 3280164.59 1417.031 <br>
+0.00120 3279915.19 1840.032 <br>
+0.00180 3279499.57 1566.084 <br>
+
+<br>Header lines should be preceded by #. <br>
+
+<br> Please note that: q = (4&pi; sin &theta;) / &lambda;,
+
+<br>
+where 2&theta; is the scattering angle and &lambda; is the wavelength of the incident X-ray beam.
+
+If your experimental profile does not contain an error column, the server will add 5% error with Poisson distribution.<br>
+
+Note, lines with zero intensities are skipped. If you profile contains negative intensity values,
+MultiFoXS will read in the profile until it encounters first negative intensity value. <br><br>
+
+<li><b><font color=blue>e-mail address:</font></b> the link with the
+results of your request is sent to this address. Using this link you
+can view the server results.
+
+</ul>
+</table>
+
+
+<table><tr><td align="left">
+<H3><font color='#B22222'>Output Page</font></H3>
+</td></tr></table>
+
+<table>
+<tr><td align ="left">
+
+The ouput of MultiFoXS is a list of best scoring multi-state models for 
+each state number. 
+
+</td></tr></table>
+
+
+</div>
