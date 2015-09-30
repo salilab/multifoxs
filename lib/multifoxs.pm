@@ -81,25 +81,25 @@ sub get_project_menu {
 
 sub get_header {
   return "<div id='header1'>  
-    <table> <tbody> <tr> <td halign='left'>
-                         <table><tr><td><img src=\"http://modbase.compbio.ucsf.edu/multifoxs/html/logo.png\" align = 'right' height = '60'></td></tr>
+    <table> <tbody> <tr> <td align='left'>
+                         <table><tr><td><img src=\"http://modbase.compbio.ucsf.edu/multifoxs/html/logo.png\" alt='Logo' align = 'right' height = '60'/></td></tr>
                                 <tr><td><h3><font color='#B22222'> Multi-state modeling with SAXS profiles </font> </h3> </td></tr></table>
                          </td>
-                         <td halign='right'><img src=\"http://salilab.org/foxsdock/logo2.gif\" height = '90'></td></tr>
+                         <td align='right'><img src=\"http://salilab.org/foxsdock/logo2.gif\" alt='Profile' height = '90'/></td></tr>
   </tbody> </table></div>\n";
 }
 
 
 sub get_footer {
-  return "<hr size='2' width=\"80%\">
-<div id='address'> <p> <p>Contact: <script>escramble(\"dina\",\"salilab.org\")</script><br></div>\n";
+  return "<hr size='2' width=\"80%\"/>
+<div id='address'> Contact: <script type=\"text/javascript\">escramble(\"dina\",\"salilab.org\")</script></div>\n";
 }
 
 sub get_index_page {
   my $self = shift;
   my $q = $self->cgi;
 
-  return "<body onLoad=\"init()\">\n " .
+  return #"<body onLoad=\"init()\">\n " .
 
   $q->start_form({-name=>"multifoxsform", -method=>"post", -action=>$self->submit_url}) .
 
@@ -107,7 +107,7 @@ sub get_index_page {
     $q->Tr($q->td('Type PDB code for protein or upload file in PDB format')) . $q->end_table .
 
   $q->start_table({ -border=>0, -cellpadding=>5, -cellspacing=>0, -width=>'99%'}) .
-    $q->Tr($q->td({ -align=>'left'}, ['<font color=blue>' . $q->b('Input protein:')]) ,
+    $q->Tr($q->td({ -align=>'left'}, ['<font color="blue">' . $q->b('Input protein:') . '</font>']) ,
            $q->td({ -align=>'left'}, [$q->textfield({-name=>'pdbcode', -maxlength => 10, -size => 10}) .
                   ' (PDB:chainId e.g. 2kai:AB)']),
            $q->td({ -align=>'left'}, [$q->b('or') . ' upload file: ' . $q->filefield({-name=>'pdbfile', -size => 10})])) .
@@ -134,7 +134,7 @@ sub get_index_page {
 
     $q->Tr($q->td({ -align=>'left', -colspan => 2}, [$q->submit(-value => 'Submit') . $q->reset(-value => 'Clear')])) .
 
-  $q->end_table;
+  $q->end_table . $q->end_form;
 
 }
 
@@ -290,30 +290,30 @@ sub get_results_page {
                   "[x00FFFF]",
                   "[xA6CEE3]");
 
+  $return .= printCanvas();
+
 
   $return .= print_input_data($job);
 
   my $max_state_number = 4;
-  my $gnuplot_string = "<script> gnuplot.show_plot(\"jsoutput_3_plot_2\"); </script>";
+  my $gnuplot_string = "<script type=\"text/javascript\"> gnuplot.show_plot(\"jsoutput_3_plot_2\"); </script>";
   for(my $state_number = 1; $state_number <= $max_state_number; $state_number++) {
     my $plotnum = $state_number+1;
     if($state_number != 2 && $state_number != 1) {
-      $gnuplot_string .= "<script> gnuplot.hide_plot(\"jsoutput_3_plot_$plotnum\"); </script>";
+      $gnuplot_string .= "<script type=\"text/javascript\"> gnuplot.hide_plot(\"jsoutput_3_plot_$plotnum\"); </script>";
     }
   }
-  $return .= "<p><table align=center><tr>";
-  $return .= "<table align = center><tr><td align=center><div  id=\"wrapper2\"><img src=\"" . $job->get_results_file_url("chis.png") . "\" height=250 width=300></div></td>\n";
+  $return .= "<table align=\"center\"><tr>";
+  $return .= "<table align =\"center\"><tr><td align=\"center\"><div  id=\"wrapper2\"><img src=\"" . $job->get_results_file_url("chis.png") . "\" alt='Chi scores' height='250' width='300'/></div></td>\n";
 
-  $return .= printCanvas();
-
-  $return .= "<script src=\"" . $job->get_results_file_url("jsoutput.3.js") . "\"></script>\n";
+  $return .= "<script type=\"text/javascript\" src=\"" . $job->get_results_file_url("jsoutput.3.js") . "\"></script>\n";
   $return .= "<td><div  id=\"wrapper2\">
-<canvas id=\"jsoutput_3\" height=250 width=300 tabindex=\"0\" oncontextmenu=\"return false;\">
+<canvas id=\"jsoutput_3\" height='250' width='300' tabindex=\"0\" oncontextmenu=\"return false;\">
 <div class='box'><h2>Your browser does not support the HTML 5 canvas element</h2></div>
 </canvas>
 <div id=\"buttonWrapper\">
-<input type=\"button\" id=\"minus\" onclick=\"gnuplot.unzoom();\"></div></div>
-<script>
+<input type=\"button\" id=\"minus\" onclick=\"gnuplot.unzoom();\"/></div></div>
+<script type=\"text/javascript\">
   if (window.attachEvent) {window.attachEvent('onload', jsoutput_3);}
 else if (window.addEventListener) {window.addEventListener('load', jsoutput_3, false);}
 else {document.addEventListener('load', jsoutput_3, false);}
@@ -323,30 +323,8 @@ else {document.addEventListener('load', jsoutput_3, false);}
   $return .= $gnuplot_string;
   $return .= "</tr></table></tr>\n";
 
-  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmoljQuery.js\"></script>\n";
-  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmoljQueryExt.js\"></script>\n";
-  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolCore.js\"></script>\n";
-  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolApplet.js\"></script>\n";
-  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolApi.js\"></script>\n";
-  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/j2sjmol.js\"></script>\n";
-  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmol.js\"></script>\n";
+  $return .= printJSmol();
 
-
-  $return .= "<script type=\"text/javascript\">\n";
-  $return .= "var myInfo1 = {\n";
-  $return .= "        height: '98%',\n";
-  $return .= "        width: '98%',\n";
-  $return .= "        jarFile: \"JmolApplet.jar\",\n";
-  $return .= "        jarPath: \"/foxs/jsmol2/../\",\n";
-  $return .= "        j2sPath: \"/foxs/jsmol2/j2s/\",\n";
-  $return .= "        use: 'HTML5',\n";
-  $return .= "        console: \"myJmol1_infodiv\",\n";
-  $return .= "        debug: false\n";
-  $return .= "};\n";
-  $return .= "</script>";
-
-  my $jdir = `pwd`;
-  `echo $jdir > jdir`;
 
   if(-e "$jobdir/ensembles_size_1.txt") {
     $return .= printMultiStateModel($job, "ensembles_size_1.txt", 1, 1, $colors2[0]);
@@ -364,8 +342,32 @@ else {document.addEventListener('load', jsoutput_3, false);}
     $return .= printMultiStateModel($job, "ensembles_size_4.txt", 4, 1, $colors2[3]);
   }
 
-  $return .= "</table></body>";
+  $return .= "</table>";
 
+  return $return;
+}
+
+sub printJSmol {
+  my $return = "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmoljQuery.js\"></script>\n";
+  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmoljQueryExt.js\"></script>\n";
+  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolCore.js\"></script>\n";
+  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolApplet.js\"></script>\n";
+  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolApi.js\"></script>\n";
+  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/j2sjmol.js\"></script>\n";
+  $return .= "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmol.js\"></script>\n";
+
+  $return .= "<script type=\"text/javascript\">\n";
+  $return .= "var myInfo1 = {\n";
+  $return .= "        height: '98%',\n";
+  $return .= "        width: '98%',\n";
+  $return .= "        jarFile: \"JmolApplet.jar\",\n";
+  $return .= "        jarPath: \"/foxs/jsmol2/../\",\n";
+  $return .= "        j2sPath: \"/foxs/jsmol2/j2s/\",\n";
+  $return .= "        use: 'HTML5',\n";
+  $return .= "        console: \"myJmol1_infodiv\",\n";
+  $return .= "        debug: false\n";
+  $return .= "};\n";
+  $return .= "</script>";
 
   return $return;
 }
@@ -384,33 +386,29 @@ sub print_input_data {
   my $flexres_url = $job->get_results_file_url("hinges.dat");
   my $profile_url = $job->get_results_file_url("iq.dat");
 
-  my $return = "<table width=\"90%\"><tr>
-<td><font color=blue>Input protein</td>
-<td><font color=blue>Flexible residues</td>
-<td><font color=blue>SAXS profile</td>
-<td><font color=blue>e-mail address</td></tr>";
+  my $return = "<table width=\"90%\"><tr><td>Input protein</td><td>Flexible residues</td><td>SAXS profile</td><td>e-mail address</td></tr>";
 
   $return .= "<tr><td><a href=\"". $pdb_url . "\">  $data[0] </a> </td> " .
     " <td><a href=\"". $flexres_url . "\"> $data[1] </a> </td> " .
-      " <td><a href=\"". $profile_url . "\">  $data[2] </a> </td> <td> $data[3] </td> </tr></tbody></table>";
+      " <td><a href=\"". $profile_url . "\">  $data[2] </a> </td> <td> $data[3] </td> </tr></table>";
   return $return;
 }
 
 
 sub printCanvas {
   return
-    "<script src=\"/foxs/gnuplot_js/canvastext.js\"></script>                                                                       
-<script src=\"/foxs/gnuplot_js/gnuplot_common.js\"></script>                                                                    
-<script src=\"/foxs/gnuplot_js/gnuplot_dashedlines.js\"></script>                                                               
-<script src=\"/foxs/gnuplot_js/gnuplot_mouse.js\"></script>                                                                     
-<script type=\"text/javascript\">                                                                                               
-var canvas, ctx;                                                                                                                
-gnuplot.grid_lines = true;                                                                                                      
-gnuplot.zoomed = false;                                                                                                         
-gnuplot.active_plot_name = \"gnuplot_canvas\";                                                                                  
-gnuplot.active_plot = gnuplot.dummyplot;                                                                                        
-gnuplot.dummyplot = function() {};                                                                                              
-function gnuplot_canvas( plot ) { gnuplot.active_plot(); };                                                                     
+    "<script type=\"text/javascript\" src=\"/foxs/gnuplot_js/canvastext.js\"></script>
+<script type=\"text/javascript\" src=\"/foxs/gnuplot_js/gnuplot_common.js\"></script>
+<script type=\"text/javascript\" src=\"/foxs/gnuplot_js/gnuplot_dashedlines.js\"></script>
+<script type=\"text/javascript\" src=\"/foxs/gnuplot_js/gnuplot_mouse.js\"></script>
+<script type=\"text/javascript\">
+var canvas, ctx;
+gnuplot.grid_lines = true;
+gnuplot.zoomed = false;
+gnuplot.active_plot_name = \"gnuplot_canvas\";
+gnuplot.active_plot = gnuplot.dummyplot;
+gnuplot.dummyplot = function() {};
+function gnuplot_canvas( plot ) { gnuplot.active_plot(); };
 </script>\n";
 }
 
@@ -437,9 +435,9 @@ sub printMultiStateModel {
           my $plotnum = $state_number+1;
           $return .= "<tr><th> <b> Best scoring $state_number-state model &chi; = $score  c<sub>1</sub> = $c1  c<sub>2</sub> = $c2\n";
           # print checkbox
-          $return .= "<input type=checkbox id='chbx$plotnum' onchange='func$plotnum()'";
+          $return .= "<input type='checkbox' id='chbx$plotnum' onchange='func$plotnum()'";
           if($state_number == 2) { $return .= " checked"; }
-          $return .= ">\n";
+          $return .= "/>\n";
           $return .= "<script type=\"text/javascript\">\n";
           $return .= "function func$plotnum() {
   if(document.getElementById(\"chbx$plotnum\").checked==true){
@@ -452,7 +450,7 @@ sub printMultiStateModel {
           $fit_file = $job->get_results_file_url($fit_file);
           $return .= " show/hide <a href = \"$fit_file\"> weighted profile </a> </b> </th></tr><tr><td>";
 
-          $return .= "<table align=center> <tr>";
+          $return .= "<table align=\"center\"> <tr>";
           # read and display PDBs
           for(my $i=0; $i<$state_number; $i++) {
             my $curr_state = $i+1;
