@@ -53,7 +53,7 @@ sub new {
 sub get_navigation_lab {
   return "<div id=\"navigation_lab\">
       &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=about\">About MultiFoXS</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://salilab.org/multifoxs\">Web Server</a>&nbsp;
+      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs\">Web Server</a>&nbsp;
       &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=help\">Help</a>&nbsp;
       &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=FAQ\">FAQ</a>&nbsp;
       &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=download\">Download</a>&nbsp;
@@ -82,10 +82,10 @@ sub get_project_menu {
 sub get_header {
   return "<div id='header1'>  
     <table> <tbody> <tr> <td align='left'>
-                         <table><tr><td><img src=\"http://modbase.compbio.ucsf.edu/multifoxs/html/logo.png\" alt='Logo' align = 'right' height = '60'/></td></tr>
+                         <table><tr><td><img src=\"//modbase.compbio.ucsf.edu/multifoxs/html/logo.png\" alt='Logo' align = 'right' height = '60'/></td></tr>
                                 <tr><td><h3><font color='#B22222'> Multi-state modeling with SAXS profiles </font> </h3> </td></tr></table>
                          </td>
-                         <td align='right'><img src=\"http://salilab.org/foxsdock/logo2.gif\" alt='Profile' height = '90'/></td></tr>
+                         <td align='right'><img src=\"//salilab.org/foxsdock/logo2.gif\" alt='Profile' height = '90'/></td></tr>
   </tbody> </table></div>\n";
 }
 
@@ -99,7 +99,7 @@ sub get_index_page {
   my $self = shift;
   my $q = $self->cgi;
 
-  return #"<body onLoad=\"init()\">\n " .
+  return
 
   $q->start_form({-name=>"multifoxsform", -method=>"post", -action=>$self->submit_url}) .
 
@@ -107,18 +107,18 @@ sub get_index_page {
     $q->Tr($q->td('Type PDB code for protein or upload file in PDB format')) . $q->end_table .
 
   $q->start_table({ -border=>0, -cellpadding=>5, -cellspacing=>0, -width=>'99%'}) .
-    $q->Tr($q->td({ -align=>'left'}, ['<font color="blue">' . $q->b('Input protein:') . '</font>']) ,
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#protein"}, $q->b('Input protein'))]) ,
            $q->td({ -align=>'left'}, [$q->textfield({-name=>'pdbcode', -maxlength => 10, -size => 10}) .
                   ' (PDB:chainId e.g. 2kai:AB)']),
            $q->td({ -align=>'left'}, [$q->b('or') . ' upload file: ' . $q->filefield({-name=>'pdbfile', -size => 10})])) .
 
-    $q->Tr($q->td({ -align=>'left'}, [$q->b('Flexible residues:')]),
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#flexres"}, $q->b('Flexible residues'))]),
            $q->td({ -align=>'left'}, [$q->filefield({-name=>'hingefile', -size => 10})])) .
 
-    $q->Tr($q->td({ -align=>'left'}, [$q->b('SAXS profile:')]),
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#profile"}, $q->b('SAXS profile'))]),
            $q->td({ -align=>'left'}, [$q->filefield({-name=>'saxsfile', -size => 10})])) .
 
-    $q->Tr($q->td({ -align=>'left'}, [$q->b('e-mail address:')]),
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#email"}, $q->b('e-mail address'))]),
            $q->td({ -align=>'left'}, [$q->textfield({-name => 'email'})]),
            $q->td({ -align=>'left'}, ['(the results are sent to this address)'])) .
 
@@ -126,11 +126,15 @@ sub get_index_page {
 
     $q->Tr($q->td({ -align=>'left', -colspan => 3}, [$q->b('Advanced Parameters')])) .
 
-    $q->Tr($q->td({ -align=>'left'}, ['Connect rigid bodies:']),
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#jobname"}, 'Job name')]),
+           $q->td({ -align=>'left'}, [$q->textfield({-name => 'jobname', -maxlength => 10, -size => 10})])) .
+
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#conectrbs"}, 'Connect rigid bodies')]),
            $q->td({ -align=>'left'}, [$q->filefield({-name=>'connectrbsfile', -size => 10})])) .
 
-    $q->Tr($q->td({ -align=>'left'}, ['Number of models to generate']),
-           $q->td({ -align=>'left'}, [$q->textfield({-name=>'modelsnumber', -value=>100, -maxlength => 5, -size => 5})])) .
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#confnumber"}, 'Number of conformations')]),
+           $q->td({ -align=>'left'}, [$q->textfield({-name=>'modelsnumber', -value=>100, -maxlength => 5, -size => 5})]),
+           $q->td({ -align=>'left'}, ['Use 100 to test your setup, 10,000 for final calculation'])) .
 
     $q->Tr($q->td({ -align=>'left', -colspan => 2}, [$q->submit(-value => 'Submit') . $q->reset(-value => 'Clear')])) .
 
@@ -149,20 +153,26 @@ sub get_submit_page {
   my $hingefile = $q->param('hingefile');
   my $saxsfile = $q->param('saxsfile');
   my $email = $q->param('email');
+
+  my $jobname = $q->param('jobname');
   my $connectrbsfile = $q->param('connectrbsfile');
   my $modelsnumber = $q->param('modelsnumber');
 
   # Validate input
   check_required_email($email);
 
-  if(($modelsnumber !~ /^\d+$/ and $modelsnumber !~ /^\d$/) or $modelsnumber <= 0 or $modelsnumber >= 10000) {
-    throw saliweb::frontend::InputValidationError("Invalid value for number of models $modelsnumber. Must be > 0 and < 10000\n");
+  if(($modelsnumber !~ /^\d+$/ and $modelsnumber !~ /^\d$/) or $modelsnumber <= 0 or $modelsnumber > 10000) {
+    throw saliweb::frontend::InputValidationError("Invalid value for number of models $modelsnumber. Must be > 0 and <= 10000\n");
   }
-
 
   #create job directory time_stamp
   my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime;
-  my $time_stamp = $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
+  my $time_stamp;
+  if(length $jobname > 0) {
+    $time_stamp = $jobname . "_" . $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
+  } else {
+    $time_stamp = $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
+  }
   my $job = $self->make_job($time_stamp, $self->email);
   my $jobdir = $job->directory;
 
@@ -178,7 +188,7 @@ sub get_submit_page {
       my $file_contents = "";
       my $atoms = 0;
       while (<$upload_filenandle>) {
-        if (/^ATOM  /) { $atoms++; }
+        if (/^ATOM  /) { $atoms++; } #TODO: HETATM?
         $file_contents .= $_;
       }
       if ($atoms == 0) {
@@ -259,19 +269,21 @@ sub get_submit_page {
   print INFILE "$cmd\n";
   close(INFILE);
 
-
   my $data_file_name = $jobdir . "/data.txt";
   open(DATAFILE, "> $data_file_name")
     or throw saliweb::frontend::InternalError("Cannot open $data_file_name: $!");
-  print DATAFILE "$pdb_file_name $hingefile $saxsfile $email $connectrbsfile $modelsnumber\n";
+  print DATAFILE "$pdb_file_name $hingefile $saxsfile $email $jobname $connectrbsfile $modelsnumber\n";
   close(DATAFILE);
 
   $job->submit($email);
 
+  my $line = $job->results_url . " " . $pdb_file_name . " " . $hingefile . " " . $saxsfile . " " . $email;
+  `echo $line >> ../submit.log`;
+
   # Inform the user of the job name and results URL
   return $q->p("Your job " . $job->name . " has been submitted.") .
-    #$q->p("You will receive an e-mail with results link once the job has finished");
-    $q->p("Results will be found at <a href=\"" . $job->results_url . "\">this link</a>.");
+    $q->p("You will receive an e-mail with results link once the job has finished");
+    #$q->p("Results will be found at <a href=\"" . $job->results_url . "\">this link</a>.");
 }
 
 sub get_results_page {
@@ -291,11 +303,9 @@ sub get_results_page {
                   "[xA6CEE3]");
 
   $return .= printCanvas();
-
-
   $return .= print_input_data($job);
 
-  my $max_state_number = 4;
+  my $max_state_number = 5;
   my $gnuplot_string = "<script type=\"text/javascript\"> gnuplot.show_plot(\"jsoutput_3_plot_2\"); </script>";
   for(my $state_number = 1; $state_number <= $max_state_number; $state_number++) {
     my $plotnum = $state_number+1;
@@ -321,10 +331,11 @@ else {document.addEventListener('load', jsoutput_3, false);}
 </td>\n";
 
   $return .= $gnuplot_string;
+
+  $return .= "<td align=\"center\"><div  id=\"wrapper2\"><img src=\"" . $job->get_results_file_url("hist.png") . "\" alt='Histogram' height='250' width='300'/></div></td>\n";
   $return .= "</tr></table></tr>\n";
 
   $return .= printJSmol();
-
 
   if(-e "$jobdir/ensembles_size_1.txt") {
     $return .= printMultiStateModel($job, "ensembles_size_1.txt", 1, 1, $colors2[0]);
@@ -340,6 +351,10 @@ else {document.addEventListener('load', jsoutput_3, false);}
 
   if(-e "$jobdir/ensembles_size_4.txt") {
     $return .= printMultiStateModel($job, "ensembles_size_4.txt", 4, 1, $colors2[3]);
+  }
+
+  if(-e "$jobdir/ensembles_size_5.txt") {
+    $return .= printMultiStateModel($job, "ensembles_size_5.txt", 5, 1, $colors2[4]);
   }
 
   $return .= "</table>";
@@ -385,15 +400,73 @@ sub print_input_data {
   my $pdb_url = $job->get_results_file_url($data[0]);
   my $flexres_url = $job->get_results_file_url("hinges.dat");
   my $profile_url = $job->get_results_file_url("iq.dat");
+  my $conformations_number = `cat filenames | wc -l`;
+  my $conformations_url = $job->get_results_file_url("conformations.zip");
+  my $multi_foxs_url = $job->get_results_file_url("multi_foxs.zip");
 
-  my $return = "<table width=\"90%\"><tr><td>Input protein</td><td>Flexible residues</td><td>SAXS profile</td><td>e-mail address</td></tr>";
+  my $return = "<table width=\"90%\"><tr><td>Input protein</td>\n";
+  $return .= "<td>Flexible residues</td><td>SAXS profile</td><td>e-mail address</td><td># of conformations</td>\n";
+  $return .= "<td colspan=\"2\">Download results</td></tr>\n";
 
-  $return .= "<tr><td><a href=\"". $pdb_url . "\">  $data[0] </a> </td> " .
-    " <td><a href=\"". $flexres_url . "\"> $data[1] </a> </td> " .
-      " <td><a href=\"". $profile_url . "\">  $data[2] </a> </td> <td> $data[3] </td> </tr></table>";
+  $return .= "<tr><td><a href=\"". $pdb_url . "\">  $data[0] </a> </td>\n";
+  $return .= "<td><a href=\"". $flexres_url . "\"> $data[1] </a> </td>\n";
+  $return .= "<td><a href=\"". $profile_url . "\">  $data[2] </a> </td> <td> $data[3] </td>\n";
+  $return .= "<td> $conformations_number </td>\n";
+  $return .= "<td><a href=\"". $conformations_url . "\">  conformations </a> </td>\n";
+  $return .= "<td><a href=\"". $multi_foxs_url . "\"> MultiFoXS output files </a> </td> </tr></table>\n";
   return $return;
 }
 
+sub get_foxs_input_fit {
+  my ($self, $job) = @_;
+  my $q = $self->cgi;
+
+  my $return = '';
+  my $jobname = $job->name;
+  my $joburl = $job->results_url;
+  my $jobdir = $job->directory;
+  my $passwd = $q->param('passwd');
+  $return .= printCanvas();
+
+  my $gnuplot_string = "<script type=\"text/javascript\"> gnuplot.show_plot(\"jsoutput_1_plot_2\"); </script>";
+  my $plotnum = 2;
+  $return .= "<table align=\"center\"><tr>";
+  $return .= "<script type=\"text/javascript\" src=\"" . $job->get_results_file_url("jsoutput.1.js") . "\"></script>\n";
+  $return .= "<td><div  id=\"wrapper2\">
+<canvas id=\"jsoutput_1\" height='250' width='300' tabindex=\"0\" oncontextmenu=\"return false;\">
+<div class='box'><h2>Your browser does not support the HTML 5 canvas element</h2></div>
+</canvas>
+<div id=\"buttonWrapper\">
+<input type=\"button\" id=\"minus\" onclick=\"gnuplot.unzoom();\"/></div></div>
+<script type=\"text/javascript\">
+  if (window.attachEvent) {window.attachEvent('onload', jsoutput_1);}
+else if (window.addEventListener) {window.addEventListener('load', jsoutput_1, false);}
+else {document.addEventListener('load', jsoutput_1, false);}
+</script>
+</td>\n";
+
+  $return .= $gnuplot_string;
+  $return .= "</tr></table></tr>\n";
+
+  $return .= printJSmol();
+
+  `grep -E \"MODEL|ENDMDL|CA| P |HETATM\" jmoltable.pdb > tmpj; mv tmpj jmoltable.pdb`;
+
+  open(JMOLFILE, "<jmoltable.html");
+  while(<JMOLFILE>) {
+    my $line = $_;
+    my $curr_string = "load jmoltable.pdb";
+    my $jmoltable_url = $job->get_results_file_url("jmoltable.pdb");
+    my $new_string = "load $jmoltable_url";
+    $line =~ s/$curr_string/$new_string/;
+    $curr_string = "dirname/input_iq.dat";
+    my $fit_url = $job->get_results_file_url("input_iq.dat");
+    $line =~ s/$curr_string/$fit_url/;
+    print $line;
+  }
+  close(JMOLFILE);
+  return $return;
+}
 
 sub printCanvas {
   return
@@ -436,7 +509,7 @@ sub printMultiStateModel {
           $return .= "<tr><th> <b> Best scoring $state_number-state model &chi; = $score  c<sub>1</sub> = $c1  c<sub>2</sub> = $c2\n";
           # print checkbox
           $return .= "<input type='checkbox' id='chbx$plotnum' onchange='func$plotnum()'";
-          if($state_number == 2) { $return .= " checked"; }
+          if($state_number == 2 || $state_number == 1) { $return .= " checked"; }
           $return .= "/>\n";
           $return .= "<script type=\"text/javascript\">\n";
           $return .= "function func$plotnum() {
@@ -456,19 +529,17 @@ sub printMultiStateModel {
             my $curr_state = $i+1;
             my $fileName = "e" . $state_number . "/e" . $model_number ."_" . $i . ".pdb";
             my $newFileName = "e" . $state_number . "_" . $model_number . "_" . $i . ".pdb";
-            `grep CA $fileName > $newFileName`;
-            `grep \" P \" $fileName >> $newFileName`;
-            my $rg = `head -n$curr_state rg$state_number | tail -n1 | awk '{print \$3}'`;
-            chomp $rg;
-            my @wtmp = split(' ', $tmp[1]);
-            my $weight = $wtmp[0];
+            `grep  -E \"MODEL|ENDMDL|CA| P |HETATM\" $fileName > $newFileName`;
+            my $rg = `head -n$curr_state rg$state_number | tail -n1 | awk '{print \$1}'`;
+            my $weight = `head -n$curr_state rg$state_number | tail -n1 | awk '{print \$2}'`;
             my $num = $i+1;
-            $return .= "<td><table><tr><th><b>PDB$num: $fileName R<sub>g</sub> = $rg w<sub>$num</sub> = $weight</b></th></tr><tr><td>\n";
+            my $fname = $job->get_results_file_url($fileName);
+            $return .= "<td><table><tr><th><b><a href=\"$fname\">PDB$num</a> R<sub>g</sub> = $rg w<sub>$num</sub> = $weight</b></th></tr><tr><td>\n";
             $return .= "<div  id=\"wrapper2\">\n";
             $return .= "<script type=\"text/javascript\">\n";
             my $appletName = "myJmol".$state_number."_".$i;
             $return .= "$appletName = Jmol.getApplet(\"$appletName\", myInfo1);\n";
-            my $fname = $job->get_results_file_url($newFileName);
+            $fname = $job->get_results_file_url($newFileName);
             $return .= "Jmol.script($appletName, 'load \"$fname\";backbone OFF; cartoons; color $color;' );\n";
             $return .= "</script></div></td></tr></table> </td>\n";
           }

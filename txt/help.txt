@@ -13,7 +13,8 @@
 
 
 <ul>
-<li><b><font color=blue>Input protein:</font></b> it is possible to
+<a name="protein"></a>
+<li><b>Input protein:</b> it is possible to
 specify the PDB code of the input protein <b>or</b> upload file in PDB
 format. Each code is a four character PDB ID, followed by a colon and
 a list of chain IDs, e.g. 2pka:AB. If no chain IDs are given, all the
@@ -21,28 +22,26 @@ chains of the PDB file are used.
 
 <p><b><font color=red> IMPORTANT! </font> Your input protein should contain all the atoms with proper geometry (bond length, bond angles, no steric clashes).</b> Missing fragments can be filled in using <a href="http://salilab.org/modeller/"> MODELLER </a> or <a href="https://modbase.compbio.ucsf.edu/allosmod-foxs/"> AllosMod-FoXS webserver</a>.
 
-
-<li><b><font color=blue>Flexible residues:</font></b> a list of residues that their backbone phi and psi angles are sampled by the sampling algorithm. Those residues divide the input protein into rigid bodies and linkers. This list should contain linkers between the domains. You can use <a href="http://bioinfo3d.cs.tau.ac.il/HingeProt"> HingeProt </a> to identify hinge regions. Please do not include flexible loops, as the server cannot handle cycles, the current implementation is limited to tree-like topologies.
+<a name="flexres"></a>
+<li><b>Flexible residues:</b> a list of residues that their backbone phi and psi angles are sampled by the sampling algorithm. Those residues divide the input protein into rigid bodies and linkers. This list should contain linkers between the domains. You can use <a href="http://bioinfo3d.cs.tau.ac.il/HingeProt"> HingeProt </a> to identify hinge regions. Please do not include flexible loops, as the server cannot handle cycles, the current implementation is limited to linear or tree-like topologies.
 
 <p> The file has to be in the following format:<br>
 [residue index] [chain ID][newline]<br>
 ...
 <br><br>
-(if there is no chain ID then residue index is sufficient).
+(If there is no chain ID, then residue index is sufficient).
 
-<p> Example: for calmodulin (PDB 4cln), HingeProt detects a hinge region between residues 77 and 78. Therefore, we will designate residues 74 to 82 as flexible residues:<br> 
-74 A<br>
-75 A<br>
-76 A<br>
-77 A<br>
-78 A<br>
-79 A<br>
-80 A<br>
-81 A<br>
-82 A<br>
+<p> Example: for replication protein A (DNA binding domains, PDB 1fgu, chain A), HingeProt detects a hinge region between residues 299 and 300. Therefore, we will designate residues 289 to 302 as flexible residues (shown in blue below):<br> <br>
+289 A<br>
+290 A<br>
+291 A<br>
+... <br>
+302 A<br>
 
-<li><b><font color=blue>SAXS profile: </font></b>
-A file with experimental SAXS profile. The experimental file should have 3 columns: q, I(q) and error: <br><br>
+<img src="http://modbase.compbio.ucsf.edu/multifoxs/html/rpa.png" alt='RPA' align = 'center' height = '200'>
+
+<a name="profile"></a>
+<li><b>SAXS profile:</b> A file with experimental SAXS profile. The experimental file should have 3 columns: q, I(q) and error: <br><br>
 
 #    q  intensity  error  <br>
 0.00000 3280247.73 1904.037 <br>
@@ -62,9 +61,36 @@ If your experimental profile does not contain an error column, the server will a
 Note, lines with zero intensities are skipped. If you profile contains negative intensity values,
 MultiFoXS will read in the profile until it encounters first negative intensity value. <br><br>
 
-<li><b><font color=blue>e-mail address:</font></b> the link with the
+<a name="email"></a>
+<li><b>e-mail address:</b> the link with the
 results of your request is sent to this address. Using this link you
-can view the server results.
+can view the server results. <br><br>
+
+</ul></table>
+
+<table><tr><td align="left">
+<H3><font color='#B22222'>Optional Fields</font></H3>
+</td></tr></table>
+
+<table>
+<tr><td align ="left">
+
+<ul>
+
+<a name="jobname"></a>
+<li><b> Job name: </b> the server generates a default name based on the time stamp. If user has provided a job name, the server will use it as a prefix for the job name. <br><br>  
+
+<a name="conectrbs"></a>
+<li><b>Connect rigid bodies:</b> by default the RRT sampling method reads in each PDB chain as a separate rigid body. Those are further broken down by flexible residues. In some cases, we might want to connect parts of the different chains into one rigid body. For example, if a protein is a dimer where each monomer consists of two domains and the first domain is the one involved in dimerization, such as ATG7 (PDB 3vh1). In this case we want to maintain the dimerization interface and move the second (upper) domain only. To achieve that we connect the first domain of the two chains into one rigid body by providing a file with a pair of residues one from each domain: <br> <br>
+
+326 A 513 B <br><br>
+
+will connect the rigid body that residue 326 (chain A) belongs to with the rigid body that residue 513 (chain B) belongs to. The result will be 3 rigid bodies connected by two linkers (blue).<br><br>
+
+<img src="http://modbase.compbio.ucsf.edu/multifoxs/html/atg7.png" alt='ATG7' align = 'center' height = '200'>
+
+<a name="confnumber"></a>
+<li><b>Number of conformations:</b> by default the server generates 100 conformations from the starting structure. However this is sufficient for testing your setup only. After you see that the sampling moves the structure as needed, it is necessary to re-run the server and generate 10,000 conformations. One can also try to repeat the calculation starting from the best scoring conformation from the previous calculation.<br><br>
 
 </ul>
 </table>
@@ -77,8 +103,20 @@ can view the server results.
 <table>
 <tr><td align ="left">
 
+Examples of MultiFoXS output:<br><br>
+
+<ul>
+
+<li> <a href="http://modbase.compbio.ucsf.edu/multifoxs/results.cgi/ligase1000_54_25_15_5_9_115?passwd=lFMsIIx49D"> DNA ligase without DNA </a> - multi-domain protein, data from Cotner-Gohara et al. Biochemistry 2010 <br>
+
+<li> <a href="http://modbase.compbio.ucsf.edu/multifoxs/results.cgi/prion10000_15_18_16_5_9_115?passwd=jZX9tlSX3u"> Full length prion protein </a> - long disordered fragment, data from Carter at al. Biophys J. 2015 <br>
+
+
+
+</ul>
+
 The ouput of MultiFoXS is a list of best scoring multi-state models for 
-each state number. 
+each state number. The user can download all the conformations generated by RRT sampling in PDB format and MultiFoXS output files. The best scoring multi-state model for each number of states is displayed in the output page along with the fit to data. 
 
 </td></tr></table>
 

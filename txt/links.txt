@@ -1,0 +1,41 @@
+<h3><font color='#B22222'>Useful links</font></h3>
+
+
+<div id=resulttable>
+
+<p>
+
+
+<table><tbody><tr><td>
+<p><p>
+<ul>
+
+<p>
+
+<li><a href="http://salilab.org/foxs/"> FoXS </a> - profile calculation server
+
+<li><a href="http://salilab.org/foxsdock/"> FoXSDock </a> - protein-protein docking with SAXS profiles
+
+<li><a href="http://salilab.org/imp/"> IMP </a> -
+Integrative Modeling Platform for comprehensive structural
+characterization of biomolecules. MultiFoXS code is found in modules kinematics, foxs, and multi_state
+
+<li><a href="http://www.cgl.ucsf.edu/chimera/"> UCSF Chimera </a> - can be used to fill in missing fragments in your input protein.
+FoXS is also available through Chimera interactive visualization program. See
+this <a href="http://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/saxs/saxs.html">
+tutorial</a> on how to use FoXS from Chimera
+
+<li><a href="http://bl1231.als.lbl.gov/saxs_protocols/mes.php">MES</a> - minimal ensemble search
+
+<li><a href="http://www.bioisis.net"> Bioisis</a> - open access SAXS database, SAXS tutorials
+
+<li><a href="http://www.embl-hamburg.de/ExternalInfo/Research/Sax/software.html"> EMBL SAXS software </a>
+
+
+</ul>
+
+</td></tr></tbody></table>
+
+</div>
+
+
