@@ -31,6 +31,7 @@ tutorial</a> on how to use FoXS from Chimera
 
 <li><a href="http://www.embl-hamburg.de/ExternalInfo/Research/Sax/software.html"> EMBL SAXS software </a>
 
+<li><a href="http://www.sasbdb.org/"> SASBDB </a> - Curated repository for small angle scattering data and models
 
 </ul>
 
