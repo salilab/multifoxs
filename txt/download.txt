@@ -12,7 +12,7 @@
 
 <p> MultiFoXS is part of <a href="http://salilab.org/imp">IMP</a> software library.
 
-<p> IMP downloads for Linux, Mac and Windows are available <a href="https://integrativemodeling.org/download.html"> here</a>.
+<p> IMP downloads for Linux, Mac and Windows are available <a href="https://integrativemodeling.org/download.html"> here</a>.<br><br>
 
 Once you have an installed IMP copy, you can run MultiFoXS in 3 steps:
 
