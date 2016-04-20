@@ -58,15 +58,15 @@ sub new {
 
 sub get_navigation_lab {
   return "<div id=\"navigation_lab\">
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=about\">About MultiFoXS</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs\">Web Server</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=help\">Help</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=FAQ\">FAQ</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=download\">Download</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://salilab.org/foxs\">FoXS</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://salilab.org\">Sali Lab</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://salilab.org/imp\">IMP</a>&nbsp;
-      &bull;&nbsp; <a href=\"http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=links\">Links</a>&nbsp;</div>\n";
+      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=about\">About MultiFoXS</a>&nbsp;
+      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs\">Web Server</a>&nbsp;
+      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=help\">Help</a>&nbsp;
+      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=FAQ\">FAQ</a>&nbsp;
+      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=download\">Download</a>&nbsp;
+      &bull;&nbsp; <a href=\"https://salilab.org/foxs\">FoXS</a>&nbsp;
+      &bull;&nbsp; <a href=\"https://salilab.org\">Sali Lab</a>&nbsp;
+      &bull;&nbsp; <a href=\"https://salilab.org/imp\">IMP</a>&nbsp;
+      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=links\">Links</a>&nbsp;</div>\n";
 }
 
 sub get_navigation_links {
@@ -110,7 +110,7 @@ sub get_index_page {
   $q->start_form({-name=>"multifoxsform", -method=>"post", -action=>$self->submit_url}) .
 
   $q->start_table({ -cellpadding=>5, -cellspacing=>0}) .
-    $q->Tr($q->td('Type PDB code for protein or upload file in PDB format')) . $q->end_table .
+    $q->Tr($q->td('Type PDB code for protein or upload file in PDB format  ' . $q->a({-href => $self->help_url . "#sampleinput"}, 'sample input files'))) . $q->end_table .
 
   $q->start_table({ -border=>0, -cellpadding=>5, -cellspacing=>0, -width=>'99%'}) .
     $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#protein"}, $q->b('Input protein'))]) ,
@@ -126,7 +126,7 @@ sub get_index_page {
 
     $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#email"}, $q->b('e-mail address'))]),
            $q->td({ -align=>'left'}, [$q->textfield({-name => 'email'})]),
-           $q->td({ -align=>'left'}, ['(the results are sent to this address)'])) .
+           $q->td({ -align=>'left'}, ['(the results are sent to this address, optional)'])) .
 
     $q->Tr($q->td({ -align=>'left', -colspan => 2}, [$q->submit(-value => 'Submit') . $q->reset(-value => 'Clear')])) .
 
@@ -165,7 +165,7 @@ sub get_submit_page {
   my $modelsnumber = $q->param('modelsnumber');
 
   # Validate input
-  check_required_email($email);
+  check_optional_email($email);
 
   if(($modelsnumber !~ /^\d+$/ and $modelsnumber !~ /^\d$/) or $modelsnumber <= 0 or $modelsnumber > 10000) {
     throw saliweb::frontend::InputValidationError("Invalid value for number of models $modelsnumber. Must be > 0 and <= 10000\n");
@@ -288,8 +288,8 @@ sub get_submit_page {
 
   # Inform the user of the job name and results URL
   return $q->p("Your job " . $job->name . " has been submitted.") .
-    $q->p("You will receive an e-mail with results link once the job has finished");
-    #$q->p("Results will be found at <a href=\"" . $job->results_url . "\">this link</a>.");
+    $q->p("You will receive an e-mail with results link once the job has finished") .
+    $q->p("Results will be found at <a href=\"" . $job->results_url . "\">this link</a>.");
 }
 
 sub get_results_page {
@@ -364,6 +364,10 @@ else {document.addEventListener('load', jsoutput_3, false);}
   }
 
   $return .= "</table>";
+
+  my $multi_foxs_log_url = $job->get_results_file_url("multifoxs.log");
+  $return .= "<table><tr><td><a href=\"". $multi_foxs_log_url . "\"> view log </a> </td> </tr></table>\n";
+
 
   return $return;
 }
@@ -545,8 +549,8 @@ sub printMultiStateModel {
             $return .= "<script type=\"text/javascript\">\n";
             my $appletName = "myJmol".$state_number."_".$i;
             $return .= "$appletName = Jmol.getApplet(\"$appletName\", myInfo1);\n";
-            $fname = $job->get_results_file_url($newFileName);
-            $return .= "Jmol.script($appletName, 'load \"$fname\";backbone OFF; cartoons; color $color;' );\n";
+            #$fname = $job->get_results_file_url($newFileName);
+            $return .= "Jmol.script($appletName, 'load \"$fname\";backbone OFF; wireframe OFF; spacefill OFF; cartoons; color $color;' );\n";
             $return .= "</script></div></td></tr></table> </td>\n";
           }
 
@@ -559,5 +563,64 @@ sub printMultiStateModel {
   return $return;
 }
 
+sub get_pdb_chains {
+  my $self = shift;
+  my $pdb_chain = shift;
+  my $jobdir = shift;
+  my @input = split('\:', $pdb_chain);
+  my $pdb_code = lc $input[0];
+  my $pdb_file_name = "pdb" . $pdb_code . ".ent";
+  my $full_path_pdb_file_name = saliweb::frontend::get_pdb_code($pdb_code, $jobdir);
+  if($#input == 0 or $input[1] eq "-") { #no chains given
+    return $pdb_file_name;
+  }
+  # get chains - check if they exist in PDB
+  my $chain_id = uc $input[1];
+  if($chain_id !~ /^\w*$/) {
+    throw saliweb::frontend::InputValidationError("Invalid chain id $chain_id\n");
+  }
+  my @userchains = split(//,$chain_id);
+  my %chains= ();
+
+  open FILE, $full_path_pdb_file_name;
+  while (my $line=<FILE>){
+    if($line =~ /^ATOM/ || $line =~ /^HETATM/) {
+      if(!(substr($line,21,1) =~ ' ')){
+        $chains{substr($line,21,1)}=substr($line,21,1)." ";
+      }
+    }
+  }
+  close FILE;
+
+  foreach my $userchain (@userchains) {
+    if(not exists $chains{$userchain} ) {
+      throw saliweb::frontend::InputValidationError("invalid PDB chain $userchain");
+      # remove PDB file
+      unlink $full_path_pdb_file_name;
+      return;
+    }
+  }
+
+  # get chains
+  open FILE, $full_path_pdb_file_name;
+  my $out_pdb_file_name = $jobdir . "/" . $input[0] . $chain_id . ".pdb";
+  open OUT, ">$out_pdb_file_name";
+  while (my $line=<FILE>){
+    if($line =~ /^ATOM/|| $line =~ /^HETATM/) {
+      my $curr_chain_id = substr($line,21,1);
+      if($chain_id =~ m/$curr_chain_id/) {
+        print OUT "$line";
+      }
+    }
+  }
+  close FILE;
+  close OUT;
+  # remove PDB file
+  unlink $full_path_pdb_file_name;
+  return $input[0] . $chain_id . ".pdb";
+}
+
+
 
 1;
+

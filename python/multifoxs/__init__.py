@@ -12,6 +12,7 @@ class Job(saliweb.backend.Job):
         
         script = """
 module load sali-libraries\n
+ulimit -c 0\n
 perl /netapp/sali/dina/MultiFoXSServer/runMultiFoXS.pl %s >& multifoxs.log
 """ % (input_line)
 
