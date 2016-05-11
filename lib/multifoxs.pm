@@ -187,6 +187,7 @@ sub get_submit_page {
   my $pdb_file_name = "";
   if (length $pdbcode > 0) { # pdb code given
     $pdb_file_name = get_pdb_chains($pdbcode, $jobdir);
+    $pdb_file_name =~ s/.*[\/\\](.*)/$1/;
   } else { # upload file
     if(length $pdbfile > 0 and length $pdbcode == 0) {
       $pdb_file_uploaded = 1;
