@@ -186,7 +186,7 @@ sub get_submit_page {
   my $pdb_file_uploaded = 0;
   my $pdb_file_name = "";
   if (length $pdbcode > 0) { # pdb code given
-    $pdb_file_name = get_pdb_chains($self, $pdbcode, $jobdir);
+    $pdb_file_name = get_pdb_chains($pdbcode, $jobdir);
   } else { # upload file
     if(length $pdbfile > 0 and length $pdbcode == 0) {
       $pdb_file_uploaded = 1;
@@ -562,64 +562,6 @@ sub printMultiStateModel {
   }
   return $return;
 }
-
-sub get_pdb_chains {
-  my $self = shift;
-  my $pdb_chain = shift;
-  my $jobdir = shift;
-  my @input = split('\:', $pdb_chain);
-  my $pdb_code = lc $input[0];
-  my $pdb_file_name = "pdb" . $pdb_code . ".ent";
-  my $full_path_pdb_file_name = saliweb::frontend::get_pdb_code($pdb_code, $jobdir);
-  if($#input == 0 or $input[1] eq "-") { #no chains given
-    return $pdb_file_name;
-  }
-  # get chains - check if they exist in PDB
-  my $chain_id = uc $input[1];
-  if($chain_id !~ /^\w*$/) {
-    throw saliweb::frontend::InputValidationError("Invalid chain id $chain_id\n");
-  }
-  my @userchains = split(//,$chain_id);
-  my %chains= ();
-
-  open FILE, $full_path_pdb_file_name;
-  while (my $line=<FILE>){
-    if($line =~ /^ATOM/ || $line =~ /^HETATM/) {
-      if(!(substr($line,21,1) =~ ' ')){
-        $chains{substr($line,21,1)}=substr($line,21,1)." ";
-      }
-    }
-  }
-  close FILE;
-
-  foreach my $userchain (@userchains) {
-    if(not exists $chains{$userchain} ) {
-      throw saliweb::frontend::InputValidationError("invalid PDB chain $userchain");
-      # remove PDB file
-      unlink $full_path_pdb_file_name;
-      return;
-    }
-  }
-
-  # get chains
-  open FILE, $full_path_pdb_file_name;
-  my $out_pdb_file_name = $jobdir . "/" . $input[0] . $chain_id . ".pdb";
-  open OUT, ">$out_pdb_file_name";
-  while (my $line=<FILE>){
-    if($line =~ /^ATOM/|| $line =~ /^HETATM/) {
-      my $curr_chain_id = substr($line,21,1);
-      if($chain_id =~ m/$curr_chain_id/) {
-        print OUT "$line";
-      }
-    }
-  }
-  close FILE;
-  close OUT;
-  # remove PDB file
-  unlink $full_path_pdb_file_name;
-  return $input[0] . $chain_id . ".pdb";
-}
-
 
 
 1;
