@@ -21,15 +21,15 @@ The input to MultiFoXS is a protein structure and a SAXS profile. The output is 
 
 <table><tr><td align="left">
 
-The MultiFoXS sever protocol involves three steps:
+The MultiFoXS sever protocol involves three steps [1]:
 
 <ol>
-<li> Conformational sampling. In this step we use Rapidly exploring Random Tree (RRT) search [1,2] to sample the conformational space that is accessible to the input protein. It is recommended to generate ~10,000 conformations.
+<li> Conformational sampling. In this step we use Rapidly exploring Random Tree (RRT) search [2,3] to sample the conformational space that is accessible to the input protein. It is recommended to generate ~10,000 conformations.
 
-<li> SAXS scoring. The SAXS profile is calculate for each conformation using FoXS method [3,4].
+<li> SAXS scoring. The SAXS profile is calculate for each conformation using FoXS method [4,5].
 
 <li> Multi-state model enumeration. Given ~10,000 input conformations and their computed SAXS profiles, multi-state
-model enumeration is performed iteratively by branch-and-bound method [5].
+model enumeration is performed iteratively by branch-and-bound method [6].
 
 </ol>
 
@@ -46,6 +46,8 @@ model enumeration is performed iteratively by branch-and-bound method [5].
 <tr><td align ="left"> 
 
 <ol>
+
+<li>D. Schneidman-Duhovny, M. Hammel, JA. Tainer, and A. Sali. FoXS, FoXSDock and MultiFoXS: Single-state and multi-state structural modeling of proteins and their complexes based on SAXS profiles. NAR 2016.
 
 <li>NM. Amato, and G. Song. Using motion planning to study protein folding pathways. J Comput Biol. 2002;9(2):149-68.
 
