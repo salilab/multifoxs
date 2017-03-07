@@ -9,7 +9,7 @@ class Job(saliweb.backend.Job):
         os.chmod(".", 0775)
         par = open('input.txt', 'r')
         input_line = par.readline().strip()
-        
+
         script = """
 module load sali-libraries\n
 ulimit -c 0\n
@@ -35,4 +35,3 @@ def get_web_service(config_file):
     db = saliweb.backend.Database(Job)
     config = Config(config_file)
     return saliweb.backend.WebService(config, db)
-
