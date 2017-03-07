@@ -1,0 +1,40 @@
+#!/usr/bin/gnuplot
+reset
+
+set terminal png enhanced font '/netapp/sali/dina/MultiFoXSServer/gnuplot-4.6.0/Vera.ttf, 10' size 290,240
+set encoding utf8
+set output "hist.png"
+
+set key inside right top vertical Right noreverse noenhanced autotitle nobox
+set key samplen 2 spacing .8 font "/netapp/sali/dina/MultiFoXSServer/gnuplot-4.6.0/Vera.ttf, 8"
+
+set style line 1 lc rgb '#333333' lt 1 lw 2.0 # black
+set style line 2 lc rgb '#1a9850' lt 1 lw 2.0 # green
+set style line 3 lc rgb '#e26261' lt 1 lw 2.0 # red
+set style line 4 lc rgb '#3288bd' lt 1 lw 2.0 # blue
+set style line 5 lc rgb '#00FFFF' lt 1 lw 2.0 # cyan
+set style line 6 lc rgb '#A6CEE3' lt 1 lw 2.0 # light-blue
+set style line 7 lc rgb '#A1B1C1' lt 1 lw 2.0 # grey-blue
+set style line 8 lc rgb '#A1A1A1' lt 1 lw 2.0 # grey
+
+# Axes
+set style line 11 lc rgb '#808080' lt 1
+set border 3 back ls 11
+set xtics nomirror out scale 0.75
+set ytics nomirror scale 0.75
+
+set mxtics 2
+set ytics 0.1
+
+set xlabel 'Rg (A)'
+set ylabel 'Frequency' offset 1
+
+set yrange [0:1]
+set xrange [XRANGE1:XRANGE2]
+
+#set key invert   
+#set key at XRANGE2, 1.0
+
+plot 'hist' u 1:2 w l ls 1 t 'Ensemble' smooth csplines, 'hist7' u 1:2 w l ls 8 t '7 states' smooth csplines, 'hist6' u 1:2 w l ls 7 t '6 states' smooth csplines, 'hist5' u 1:2 w l ls 6 t '5 states' smooth csplines, 'hist4' u 1:2 w l ls 5 t '4 states' smooth csplines, 'hist3' u 1:2 w l ls 4 t '3 states' smooth csplines, 'hist2' u 1:2 w l ls 3 t '2 states' smooth csplines, 'hist1' u 1:2 w l ls 2 t '1 state' smooth csplines
+
+reset
