@@ -1,5 +1,5 @@
 #set terminal postscript eps size 3.0,2.1 color enhanced solid linewidth 2.5 font 'Helvetica,18';
-set terminal png enhanced font '/netapp/sali/dina/MultiFoXSServer/gnuplot-4.6.0/Vera.ttf, 10' size 290,240
+set terminal png enhanced font '#SCRIPTDIR#/Vera.ttf, 10' size 290,240
 set output "chis.png"
 set style line 11 lc rgb '#808080' lt 1; set border 3 back ls 11;set xtics nomirror;set ytics nomirror
 

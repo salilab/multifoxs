@@ -1,6 +1,6 @@
 Import('env')
 
-files = Glob("*.pl") + Glob("*.txt") + Glob("*.plt")
+files = Glob("*.pl") + Glob("*.txt") + Glob("*.plt") + Glob("*.ttf")
 
 i = env.Install(env['config'].script_directory, files)
 env.Alias('install', i)

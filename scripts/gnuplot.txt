@@ -1,12 +1,12 @@
 #!/usr/bin/gnuplot
 reset
 
-set terminal png enhanced font '/netapp/sali/dina/MultiFoXSServer/gnuplot-4.6.0/Vera.ttf, 10' size 290,240
+set terminal png enhanced font '#SCRIPTDIR#/Vera.ttf, 10' size 290,240
 set encoding utf8
 set output "hist.png"
 
 set key inside right top vertical Right noreverse noenhanced autotitle nobox
-set key samplen 2 spacing .8 font "/netapp/sali/dina/MultiFoXSServer/gnuplot-4.6.0/Vera.ttf, 8"
+set key samplen 2 spacing .8 font "#SCRIPTDIR#/Vera.ttf, 8"
 
 set style line 1 lc rgb '#333333' lt 1 lw 2.0 # black
 set style line 2 lc rgb '#1a9850' lt 1 lw 2.0 # green
