@@ -11,8 +11,6 @@ if($#ARGV < 4) {
 
 # software directories, please update to your path!
 my $home = "$FindBin::Bin";
-my $imp_home = "/netapp/sali/dina/imp_server_build2/";
-
 
 my $pdb = $ARGV[0];
 my $hinge_file = $ARGV[1];
@@ -28,7 +26,7 @@ if($#ARGV > 3) { $modelsnum = $ARGV[4]; }
 my $cmd;
 
 # SAXS profile
-$cmd = "$imp_home/bin/validate_profile $saxs_file > v.out";
+$cmd = "validate_profile $saxs_file > v.out";
 print "$cmd\n";
 `$cmd`;
 my $profile_size = `grep size v.out | awk '{print \$8}'` + 0;
@@ -41,7 +39,7 @@ if($profile_size < 10) {
 
 # STEP 1: run RRT sample
 my $iteration_number = 10*$modelsnum;
-$cmd = "$imp_home/setup_environment.sh $imp_home/bin/rrt_sample $pdb $hinge_file -i $iteration_number -n $modelsnum -s 0.3";
+$cmd = "rrt_sample $pdb $hinge_file -i $iteration_number -n $modelsnum -s 0.3";
 if(length $connect_rigid_bodies_file > 0) {
   $cmd .= " -c $connect_rigid_bodies_file";
 }
@@ -57,19 +55,19 @@ if(not -e "nodes1.pdb") { exit; }
 for(my $i = 1; $i < 110; $i++) {
   my $nodes_file = "nodes".$i.".pdb";
   if(-e $nodes_file) {
-    $cmd = "$imp_home/bin/foxs -m 2 -p $nodes_file";
+    $cmd = "foxs -m 2 -p $nodes_file";
     print "$cmd\n";
     `$cmd`;
   }
 } 
 # run FoXS for input PDB
-$cmd = "$imp_home/bin/foxs $saxs_file $pdb -j";
+$cmd = "foxs $saxs_file $pdb -j";
 print "$cmd\n"; 
 `$cmd`;     
 
 # STEP 3: run MultiFoXS
 `ls nodes*.pdb.dat > filenames`;
-$cmd = "$imp_home/bin/multi_foxs $saxs_file filenames -s 5 -k 1000 --max_c2 4.0";
+$cmd = "multi_foxs $saxs_file filenames -s 5 -k 1000 --max_c2 4.0";
 print "$cmd\n";
 `$cmd`;
 
@@ -79,7 +77,7 @@ print "$cmd\n";
 for(my $i = 1; $i < 110; $i++) {
   my $nodes_file = "nodes".$i.".pdb";
   if(-e $nodes_file) {
-    $cmd = "$imp_home/bin/rg -m 2 $nodes_file >> rg.out";
+    $cmd = "rg -m 2 $nodes_file >> rg.out";
     print "$cmd\n";
     `$cmd`;
   }

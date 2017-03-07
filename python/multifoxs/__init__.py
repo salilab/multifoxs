@@ -9,8 +9,8 @@ class Job(saliweb.backend.Job):
         input_line = par.readline().strip()
 
         script = """
-module load sali-libraries\n
-ulimit -c 0\n
+module load imp
+ulimit -c 0
 perl /netapp/sali/dina/MultiFoXSServer/runMultiFoXS.pl %s >& multifoxs.log
 """ % (input_line)
 

@@ -20,7 +20,6 @@ if ($#ARGV > 1) {
 open(DATA, $resFileName);
 
 my $home = "$FindBin::Bin";
-my $imp_home = "/netapp/sali/dina/imp_server_build2/";
 
 my $inModel = 0;
 my $currModelNum = 0;
@@ -68,7 +67,7 @@ while(<DATA>) {
         `cp $fileName $newFileName`;
       }
 
-      `$imp_home/bin/rg $newFileName >& rg_tmp.out`;
+      `rg $newFileName >& rg_tmp.out`;
       my $rg = `grep Rg rg_tmp.out | awk '{print \$3}'`;
       chomp $rg;
       my $weight = 0;
