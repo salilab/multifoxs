@@ -24,9 +24,15 @@ perl /netapp/sali/dina/MultiFoXSServer/runMultiFoXS.pl %s >& multifoxs.log
     def complete(self):
         os.chmod(".", 0775)
 
+class Config(saliweb.backend.Config):
+    def populate(self, config):
+        saliweb.backend.Config.populate(self, config)
+        # Read our service-specific configuration
+        self.script_directory = config.get('multifoxs', 'script_directory')
+
 
 def get_web_service(config_file):
     db = saliweb.backend.Database(Job)
-    config = saliweb.backend.Config(config_file)
+    config = Config(config_file)
     return saliweb.backend.WebService(config, db)
 
