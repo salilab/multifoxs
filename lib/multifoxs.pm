@@ -100,7 +100,7 @@ sub get_footer {
   return "<hr size='2' width=\"80%\"/>\n
 <table><tr><td align='left'> If you use MultiFoXS, please cite: </td> </tr></table>
 <div id='address'>
-D. Schneidman-Duhovny, M. Hammel, JA. Tainer, and A. Sali. FoXS, FoXSDock and MultiFoXS: Single-state and multi-state structural modeling of proteins and their complexes based on SAXS profiles. NAR 2016 [ <a href = \"//doi.org/10.1093/nar/gkw389\"> FREE Full Text </a> ]<br>
+D. Schneidman-Duhovny, M. Hammel, JA. Tainer, and A. Sali. FoXS, FoXSDock and MultiFoXS: Single-state and multi-state structural modeling of proteins and their complexes based on SAXS profiles. NAR 2016 [ <a href = \"//doi.org/10.1093/nar/gkw389\"> FREE Full Text </a> ]<br />
 Contact: <script type=\"text/javascript\">escramble(\"dina\",\"salilab.org\")</script></div>\n";
 }
 
