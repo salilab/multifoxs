@@ -15,12 +15,13 @@
 <ul>
 <a name="protein"></a>
 <li><b>Input protein:</b> it is possible to
-specify the PDB code of the input protein <b>or</b> upload file in PDB
+specify the PDB code of the input protein <b>or</b> upload a file in PDB
 format. Each code is a four character PDB ID, followed by a colon and
 a list of chain IDs, e.g. 2pka:AB. If no chain IDs are given, all the
 chains of the PDB file are used. 
 
-<p><b><font color=red> IMPORTANT! </font> Your input protein should contain all the atoms with proper geometry (bond length, bond angles, no steric clashes).</b> Missing fragments can be filled in using <a href="http://salilab.org/modeller/"> MODELLER </a> or <a href="https://modbase.compbio.ucsf.edu/allosmod-foxs/"> AllosMod-FoXS webserver</a>.
+<p><b><font color=red> IMPORTANT! </font> Your input protein should contain all the atoms with proper geometry (bond length, bond angles, no steric clashes).</b> Missing fragments can be filled in using <a href="https://salilab.org/modeller/"> MODELLER </a> or the
+<a href="https://modbase.compbio.ucsf.edu/allosmod-foxs/"> AllosMod-FoXS webserver</a>.
 
 <a name="flexres"></a>
 <li><b>Flexible residues:</b> a list of residues that their backbone phi and psi angles are sampled by the sampling algorithm. Those residues divide the input protein into rigid bodies and linkers. This list should contain linkers between the domains. You can use <a href="http://bioinfo3d.cs.tau.ac.il/HingeProt"> HingeProt </a> to identify hinge regions. Please do not include flexible loops, as the server cannot handle cycles, the current implementation is limited to linear or tree-like topologies.
@@ -38,7 +39,7 @@ chains of the PDB file are used.
 ... <br>
 302 A<br>
 
-<img src="http://modbase.compbio.ucsf.edu/multifoxs/html/rpa.png" alt='RPA' align = 'center' height = '200'>
+<img src="html/rpa.png" alt='RPA' align = 'center' height = '200'>
 
 <p> <b> <font color=red> IMPORTANT! </font> If you use TextEdit on Mac: create new file, Go to "Format" and select "Make Plain Text" (the Mac Default is Rich Text which cannot be used).</b> <br> <br>
 
@@ -82,22 +83,22 @@ can view the server results. <br><br>
 <ul>
 
 <li><b> Replication protein A (DNA binding domains, PDB 1fgu, chain A) </b> PDB contains both open and closed conformations. The input SAXS profile was simulated using the closed conformation (PDB 1jmc). We start MultiFoXS form the open conformation (PDB 1fgu, chain A) and obtained the closed one:  <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/1fguA.pdb"> PDB </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/1fguA_linkers.txt"> Flexible residues </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/1fguA_iq.dat"> SAXS profile </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/results.cgi/1fgu_17_39_12_29_11_115?passwd=ewpRW9inBV"> MultiFoXS output </a>
+<a href="https://modbase.compbio.ucsf.edu/multifoxs/html/1fguA.pdb"> PDB </a> <br>
+<a href="https://modbase.compbio.ucsf.edu/multifoxs/html/1fguA_linkers.txt"> Flexible residues </a> <br>
+<a href="https://modbase.compbio.ucsf.edu/multifoxs/html/1fguA_iq.dat"> SAXS profile </a> <br>
+<a href="https://modbase.compbio.ucsf.edu/multifoxs/results.cgi/1fgu_17_39_12_29_11_115?passwd=ewpRW9inBV"> MultiFoXS output </a>
 
 <li><b> DNA ligase without DNA </b> - multi-domain protein, data from Cotner-Gohara et al. Biochemistry 2010: <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/ligase.pdb"> PDB </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/ligase_linkers.txt"> Flexible residues </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/ligase_iq.dat"> SAXS profile </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/results.cgi/ligase1000_54_25_15_5_9_115?passwd=lFMsIIx49D"> MultiFoXS output </a>
+<a href="html/ligase.pdb"> PDB </a> <br>
+<a href="html/ligase_linkers.txt"> Flexible residues </a> <br>
+<a href="html/ligase_iq.dat"> SAXS profile </a> <br>
+<a href="https://modbase.compbio.ucsf.edu/multifoxs/results.cgi/ligase1000_54_25_15_5_9_115?passwd=lFMsIIx49D"> MultiFoXS output </a>
 
 <li><b> Full length prion protein </b> - a protein with 100-residue disordered region, data from Carter at al. Biophys J. 2015: <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/prion.pdb"> PDB </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/prion_linkers.txt"> Flexible residues </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/html/prion_iq.dat"> SAXS profile </a> <br>
-<a href="http://modbase.compbio.ucsf.edu/multifoxs/results.cgi/prion10000_15_18_16_5_9_115?passwd=jZX9tlSX3u"> MultiFoXS output </a>
+<a href="html/prion.pdb"> PDB </a> <br>
+<a href="html/prion_linkers.txt"> Flexible residues </a> <br>
+<a href="html/prion_iq.dat"> SAXS profile </a> <br>
+<a href="https://modbase.compbio.ucsf.edu/multifoxs/results.cgi/prion10000_15_18_16_5_9_115?passwd=jZX9tlSX3u"> MultiFoXS output </a>
 
 
 </ul></table>
@@ -121,7 +122,7 @@ can view the server results. <br><br>
 
 will connect the rigid body that residue 326 (chain A) belongs to with the rigid body that residue 513 (chain B) belongs to. The result will be 3 rigid bodies connected by two linkers (blue).<br><br>
 
-<img src="http://modbase.compbio.ucsf.edu/multifoxs/html/atg7.png" alt='ATG7' align = 'center' height = '200'>
+<img src="html/atg7.png" alt='ATG7' align = 'center' height = '200'>
 
 <a name="confnumber"></a>
 <li><b>Number of conformations:</b> by default the server generates 100 conformations from the starting structure. However this is sufficient for testing your setup only. After you see that the sampling moves the structure as needed, it is necessary to re-run the server and generate 10,000 conformations. One can also try to repeat the calculation starting from the best scoring conformation from the previous calculation.<br><br>
@@ -141,9 +142,9 @@ Examples of MultiFoXS output:<br><br>
 
 <ul>
 
-<li> <a href="http://modbase.compbio.ucsf.edu/multifoxs/results.cgi/ligase1000_54_25_15_5_9_115?passwd=lFMsIIx49D"> DNA ligase without DNA </a> - multi-domain protein, data from Cotner-Gohara et al. Biochemistry 2010 <br>
+<li> <a href="https://modbase.compbio.ucsf.edu/multifoxs/results.cgi/ligase1000_54_25_15_5_9_115?passwd=lFMsIIx49D"> DNA ligase without DNA </a> - multi-domain protein, data from Cotner-Gohara et al. Biochemistry 2010 <br>
 
-<li> <a href="http://modbase.compbio.ucsf.edu/multifoxs/results.cgi/prion10000_15_18_16_5_9_115?passwd=jZX9tlSX3u"> Full length prion protein </a> - long disordered fragment, data from Carter at al. Biophys J. 2015 <br>
+<li> <a href="https://modbase.compbio.ucsf.edu/multifoxs/results.cgi/prion10000_15_18_16_5_9_115?passwd=jZX9tlSX3u"> Full length prion protein </a> - long disordered fragment, data from Carter at al. Biophys J. 2015 <br>
 
 
 
@@ -153,7 +154,7 @@ The ouput of MultiFoXS is a list of best scoring multi-state models for
 each state number. The bar plot on the left displays the lowest &chi; score for each state number. The middle plot displays the fit of the best scoring multi-state model to the input profile (black dots) for each state number. The best scoring single structure fit is green, the 2-state fit is red, the 3-state fit is blue, and the 4-state fit is cyan. Using show/hide button it is possible to display/hide the profile for a specific multi-state model. The plot on the right displays the distribution of radius of gyration among top 100 best scoring multi-state models of each size. The color coding is the same as for the fit plots. This plot can help to determine the number of states by looking at the convergence of the peaks (see Carter et al. Biophys J 2015 for details). The best scoring multi-state models for each number of states are displayed next. The color coding is identical to the fit plot. For each multi-state model the &chi; value, c1 and c2 are indicated. Each structure is displayed in a separate window along with the link to the PDB file, radius of gyration, and the corresponding weight.
 
 The user can download all the conformations generated by RRT sampling in PDB format and MultiFoXS output files following links on the top of the page. 
-More information about output files is <a href="http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=download#output"><b>here</b></a>.
+More information about output files is <a href="help.cgi?type=download#output"><b>here</b></a>.
 
 </td></tr></table>
 

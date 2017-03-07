@@ -10,7 +10,8 @@
 <p><p>
 
 
-<p> MultiFoXS is part of <a href="http://salilab.org/imp">IMP</a> software library.
+<p> MultiFoXS is part of the
+<a href="https://integrativemodeling.org/">IMP</a> software library.
 
 <p> IMP downloads for Linux, Mac and Windows are available <a href="https://integrativemodeling.org/download.html"> here</a>.<br><br>
 
@@ -18,7 +19,7 @@ Once you have an installed IMP copy, you can run MultiFoXS in 3 steps:
 
 <ol> 
 
-<li> Conformational sampling. Prepare your input PDB file and flexible residues file as explained in <a href="http://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=help#protein"> Help </a>:<br><br>
+<li> Conformational sampling. Prepare your input PDB file and flexible residues file as explained in <a href="help.cgi?type=help#protein"> Help </a>:<br><br>
 <div class="imp-code notranslate htmlHigh">
 <br> rrt_sample protein_PDB flexible_residues_file -i 1000000 -n 10000 <br>
 </div>

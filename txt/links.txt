@@ -12,13 +12,13 @@
 
 <p>
 
-<li><a href="http://salilab.org/foxs/"> FoXS </a> - profile calculation server
+<li><a href="https://salilab.org/foxs/"> FoXS </a> - profile calculation server
 
-<li><a href="http://salilab.org/foxsdock/"> FoXSDock </a> - protein-protein docking with SAXS profiles
+<li><a href="https://salilab.org/foxsdock/"> FoXSDock </a> - protein-protein docking with SAXS profiles
 
-<li><a href="http://salilab.org/imp/"> IMP </a> -
+<li><a href="https://integrativemodeling.org/"> IMP </a> -
 Integrative Modeling Platform for comprehensive structural
-characterization of biomolecules. MultiFoXS code is found in modules kinematics, foxs, and multi_state
+characterization of biomolecules. MultiFoXS code is found in the kinematics, foxs, and multi_state modules.
 
 <li><a href="http://www.cgl.ucsf.edu/chimera/"> UCSF Chimera </a> - can be used to fill in missing fragments in your input protein.
 FoXS is also available through Chimera interactive visualization program. See
