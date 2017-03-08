@@ -2,6 +2,8 @@
 
 use saliweb::Test;
 use Test::More 'no_plan';
+use File::Temp;
+use Test::Exception;
 
 BEGIN {
     use_ok('multifoxs');
@@ -58,4 +60,39 @@ my $t = new saliweb::Test('multifoxs');
     my $txt = $self->get_footer();
     like($txt, qr#If you use MultiFoXS.*<div.*Tainer.*</div>#ms,
          'Footer');
+}
+
+# Test get_index_page
+{
+    my $self = $t->make_frontend();
+    my $txt = $self->get_index_page();
+    like($txt, qr/Use 100 to test your setup/ms,
+         'get_index_page');
+}
+
+# Test handle_uploaded_file
+{
+    my $tmpdir = File::Temp::tempdir(CLEANUP=>1);
+
+    throws_ok { multifoxs::handle_uploaded_file(undef, "$tmpdir/out.file",
+                                                "foo") }
+              qr/Please upload valid foo/, "handle_uploaded file, missing file";
+
+    # OK if allow_missing=1
+    multifoxs::handle_uploaded_file(undef, "$tmpdir/out.file", "desc", 1);
+
+    ok(open(FH, "> $tmpdir/in.file"), "Open in.file");
+    print FH "garbage\n";
+    ok(close(FH), "Close in.file");
+    ok(open(FH, "< $tmpdir/in.file"), "Open in.file");
+
+    throws_ok { multifoxs::handle_uploaded_file(\*FH, "/foo/bar/out.file", "") }
+              qr/Cannot open/, "handle_uploaded file, open failure";
+
+    multifoxs::handle_uploaded_file(\*FH, "$tmpdir/out.file", "desc");
+
+    ok(open(FH, "< $tmpdir/out.file"), "Open out.file");
+    my $contents = <FH>;
+    is($contents, "garbage\n", "Check out.file contents");
+    close(FH);
 }

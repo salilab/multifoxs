@@ -140,6 +140,31 @@ sub get_index_page {
 
 }
 
+# Save an uploaded file into the job directory
+sub handle_uploaded_file {
+    my ($upload, $output_file, $description, $allow_missing) = @_;
+
+    if (defined $upload && length $upload > 0) {
+        open(UPLOADFILE, "> $output_file")
+            or throw saliweb::frontend::InternalError(
+                                  "Cannot open $output_file: $!");
+        while ( <$upload> ) { print UPLOADFILE; }
+        close UPLOADFILE;
+        my $filesize = -s "$output_file";
+        if ($filesize == 0) {
+            throw saliweb::frontend::InputValidationError(
+                     "You have uploaded an empty $description");
+        }
+        #convert if needed
+        `tr '\r' '\n' < $output_file > ${output_file}.tmp`;
+        rename("${output_file}.tmp", $output_file);
+        `dos2unix $output_file`;
+    } elsif (!defined $allow_missing || !$allow_missing) {
+        throw saliweb::frontend::InputValidationError(
+                         "Please upload valid $description");
+    }
+}
+
 sub get_submit_page {
   my $self = shift;
   my $q = $self->cgi;
@@ -148,12 +173,9 @@ sub get_submit_page {
   # Get form parameters
   my $pdbcode  = lc $q->param('pdbcode');
   my $pdbfile = $q->param('pdbfile');
-  my $hingefile = $q->param('hingefile');
-  my $saxsfile = $q->param('saxsfile');
   my $email = $q->param('email') || "";
 
   my $jobname = $q->param('jobname');
-  my $connectrbsfile = $q->param('connectrbsfile');
   my $modelsnumber = $q->param('modelsnumber');
 
   # Validate input
@@ -203,78 +225,31 @@ sub get_submit_page {
   }
 
   #saxs file
-  if(length $saxsfile > 0) {
-    my $upload_filehandle = $q->upload("saxsfile");
-    open UPLOADFILE, ">$jobdir/iq.dat";
-    while ( <$upload_filehandle> ) { print UPLOADFILE; }
-    close UPLOADFILE;
-    my $filesize = -s "$jobdir/iq.dat";
-    if($filesize == 0) {
-      throw saliweb::frontend::InputValidationError("You have uploaded an empty profile file: $saxsfile");
-    }
-    #convert if needed
-    `tr '\r' '\n' < iq.dat > iq.dat.tmp`;
-    rename("iq.dat.tmp", "iq.dat");
-    `dos2unix iq.dat`;
-  } else {
-    throw saliweb::frontend::InputValidationError("Please upload valid SAXS profile");
-  }
+  handle_uploaded_file($q->upload("saxsfile"), "$jobdir/iq.dat",
+                       "SAXS profile file");
 
   # hinges file
-  if(length $hingefile > 0) {
-    my $upload_filehandle = $q->upload("hingefile");
-    open UPLOADFILE, ">$jobdir/hinges.dat";
-    while ( <$upload_filehandle> ) { print UPLOADFILE; }
-    close UPLOADFILE;
-    my $filesize = -s "$jobdir/hinges.dat";
-    if($filesize == 0) {
-      throw saliweb::frontend::InputValidationError("You have uploaded an empty flexible residues file: $hingefile");
-    }
-    #convert if needed
-    `tr '\r' '\n' < hinges.dat > hinges.dat.tmp`;
-    rename("hinges.dat.tmp", "hinges.dat");
-    `dos2unix hinges.dat`;
-  } else {
-    throw saliweb::frontend::InputValidationError("Please upload valid flexible residues file");
-  }
+  handle_uploaded_file($q->upload("hingefile"), "$jobdir/hinges.dat",
+                       "flexible residues file");
 
   # connectrbs file
-  if(length $connectrbsfile > 0) {
-    my $upload_filehandle = $q->upload("connectrbsfile");
-    open UPLOADFILE, ">$jobdir/connectrbs.dat";
-    while ( <$upload_filehandle> ) { print UPLOADFILE; }
-    close UPLOADFILE;
-    my $filesize = -s "$jobdir/connectrbs.dat";
-    if($filesize == 0) {
-      throw saliweb::frontend::InputValidationError("You have uploaded an empty rigid bodies connect file: $connectrbsfile");
-    }
-    #convert if needed
-    `tr '\r' '\n' < connectrbs.dat > connectrbs.dat.tmp`;
-    rename("connectrbs.dat.tmp", "connectrbs.dat");
-    `dos2unix connectrbs.dat`;
-  }
-
+  handle_uploaded_file($q->upload("connectrbsfile"), "$jobdir/connectrbs.dat",
+                       "rigid bodies connect file", 1);
 
   my $input_line = $jobdir . "/input.txt";
   open(INFILE, "> $input_line")
     or throw saliweb::frontend::InternalError("Cannot open $input_line: $!");
   my $cmd = "$pdb_file_name hinges.dat iq.dat";
-  if(length $connectrbsfile > 0) { $cmd .= " connectrbs.dat"; }
-  else { $cmd .= " -"; }
+  if (-s "$jobdir/connectrbs.dat" > 0) {
+      $cmd .= " connectrbs.dat";
+  } else {
+      $cmd .= " -";
+  }
   $cmd .= " $modelsnumber";
   print INFILE "$cmd\n";
   close(INFILE);
 
-  my $data_file_name = $jobdir . "/data.txt";
-  open(DATAFILE, "> $data_file_name")
-    or throw saliweb::frontend::InternalError("Cannot open $data_file_name: $!");
-  print DATAFILE "$pdb_file_name $hingefile $saxsfile $email $jobname $connectrbsfile $modelsnumber\n";
-  close(DATAFILE);
-
   $job->submit($email);
-
-  my $line = $job->results_url . " " . $pdb_file_name . " " . $hingefile . " " . $saxsfile . " " . $email;
-  `echo $line >> ../submit.log`;
 
   # Inform the user of the job name and results URL
   my $out = $q->p("Your job " . $job->name . " has been submitted.");
