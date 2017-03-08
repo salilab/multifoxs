@@ -291,7 +291,7 @@ sub get_submit_page {
   my $out = $q->p("Your job " . $job->name . " has been submitted.");
   if ($email) {
     $out .= $q->p("You will receive an e-mail with the results link once "
-                  "the job has finished.");
+                  . "the job has finished.");
   }
   $out .= $q->p("Results will be found at <a href=\"" . $job->results_url
                 . "\">this link</a>.");
