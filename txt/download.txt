@@ -97,6 +97,10 @@ ensembles_size_X.txt files, that are formatted as follows:</p>
 
 <p>The program also outputs the fits to the SAXS profile for the top-10 multi-state models into the multi_state_model_X_Y_1.dat files with the fits of the calculated weighted profile to the SAXS data. X is the number of states and Y is the number/rank of the multi-state model. The file contains 4 columns:  q, experimental intensity, model intensity, and error bar.</p> 
 
+<p>For more information, see the source code of this web service itself;
+it is <a href="https://github.com/salilab/multifoxs">available on GitHub</a>.
+</p>
+
 </td></tr></tbody></table>
 
 </div>
