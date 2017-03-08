@@ -61,7 +61,6 @@ sub get_navigation_lab {
       &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=about\">About MultiFoXS</a>&nbsp;
       &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs\">Web Server</a>&nbsp;
       &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=help\">Help</a>&nbsp;
-      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=FAQ\">FAQ</a>&nbsp;
       &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=download\">Download</a>&nbsp;
       &bull;&nbsp; <a href=\"https://salilab.org/foxs\">FoXS</a>&nbsp;
       &bull;&nbsp; <a href=\"https://salilab.org\">Sali Lab</a>&nbsp;
