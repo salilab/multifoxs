@@ -175,14 +175,11 @@ sub get_submit_page {
   }
 
   #create job directory time_stamp
-  my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime;
-  my $time_stamp;
-  if(length $jobname > 0) {
-    $time_stamp = $jobname . "_" . $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
-  } else {
-    $time_stamp = $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
+  if(length $jobname == 0) {
+    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime;
+    $jobname = $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
   }
-  my $job = $self->make_job($time_stamp, $self->email);
+  my $job = $self->make_job($jobname, $self->email);
   my $jobdir = $job->directory;
 
   # input PDB file
