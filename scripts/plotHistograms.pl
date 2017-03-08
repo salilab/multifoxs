@@ -55,7 +55,7 @@ $first_line = `head -n1 hist`;
 @tmp = split(' ', $first_line);
 my $xrange1 = $tmp[2] - $interval -2;
 my $xrange2 = $tmp[5] + $interval +2;
-$x = `sed 's/XRANGE1/$xrange/g; s/XRANGE2/$xrange2/g; s^#SCRIPTDIR#^$home^g' $home/gnuplot.txt > gnuplot.txt`;
+$x = `sed 's/XRANGE1/$xrange1/g; s/XRANGE2/$xrange2/g; s^#SCRIPTDIR#^$home^g' $home/gnuplot.txt > gnuplot.txt`;
 `gnuplot gnuplot.txt`;
 
 # jsmol canvas
