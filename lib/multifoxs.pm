@@ -225,15 +225,16 @@ sub get_submit_page {
   }
 
   #saxs file
-  handle_uploaded_file($q->upload("saxsfile"), "$jobdir/iq.dat",
+  handle_uploaded_file(scalar $q->upload("saxsfile"), "$jobdir/iq.dat",
                        "SAXS profile file");
 
   # hinges file
-  handle_uploaded_file($q->upload("hingefile"), "$jobdir/hinges.dat",
+  handle_uploaded_file(scalar $q->upload("hingefile"), "$jobdir/hinges.dat",
                        "flexible residues file");
 
   # connectrbs file
-  handle_uploaded_file($q->upload("connectrbsfile"), "$jobdir/connectrbs.dat",
+  handle_uploaded_file(scalar $q->upload("connectrbsfile"),
+                       "$jobdir/connectrbs.dat",
                        "rigid bodies connect file", 1);
 
   my $input_line = $jobdir . "/input.txt";
