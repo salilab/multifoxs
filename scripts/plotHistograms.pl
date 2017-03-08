@@ -47,7 +47,7 @@ my $first_line = `head -n1 chis`;
 my @tmp = split(' ', $first_line);
 my $yrange = $tmp[1] + $tmp[2] + 0.5;
 if($tmp[2] > $tmp[1]) { $yrange = $tmp[1]*2; }
-my $x = `sed 's/YRANGE/$yrange/g' $home/plotbar.plt | sed 's/#SCRIPTDIR#/$home/' > plotbar.plt`;
+my $x = `sed 's/YRANGE/$yrange/g; s^#SCRIPTDIR#^$home^g' $home/plotbar.plt > plotbar.plt`;
 `gnuplot plotbar.plt`;
 
 # hist plot
@@ -55,7 +55,7 @@ $first_line = `head -n1 hist`;
 @tmp = split(' ', $first_line);
 my $xrange1 = $tmp[2] - $interval -2;
 my $xrange2 = $tmp[5] + $interval +2;
-$x = `sed 's/XRANGE1/$xrange1/g' $home/gnuplot.txt | sed 's/XRANGE2/$xrange2/g' | sed 's/#SCRIPTDIR#/$home/' > gnuplot.txt`;
+$x = `sed 's/XRANGE1/$xrange/g; s/XRANGE2/$xrange2/g; s^#SCRIPTDIR#^$home^g' $home/gnuplot.txt > gnuplot.txt`;
 `gnuplot gnuplot.txt`;
 
 # jsmol canvas
