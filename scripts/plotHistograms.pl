@@ -17,9 +17,6 @@ my $generate_models = 0;
 if($#ARGV == 3) { $generate_models = 1; }
 
 `rm -f chis`;
-my $input_chi = `grep Chi input_iq.dat | cut -d ' ' -f11`;
-chomp $input_chi;
-#`echo 0 $input_chi 0 > chis`;
 for(my $i = 1; $i <= $N; $i++) {
   my $ensemble_file = "ensembles_size_" . $i . ".txt";
   if(-e $ensemble_file) {
