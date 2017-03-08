@@ -11,8 +11,8 @@ class Job(saliweb.backend.Job):
         script = """
 module load imp gnuplot
 ulimit -c 0
-perl /netapp/sali/dina/MultiFoXSServer/runMultiFoXS.pl %s >& multifoxs.log
-""" % (input_line)
+perl %s/runMultiFoXS.pl %s >& multifoxs.log
+""" % (self.config.script_directory, input_line)
 
         r = self.runnercls(script)
         r.set_sge_options('-l arch=linux-x64,h_rt=300:00:00,mem_free=4G -p 0')
