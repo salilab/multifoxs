@@ -161,7 +161,7 @@ sub get_submit_page {
   my $pdbfile = $q->param('pdbfile');
   my $hingefile = $q->param('hingefile');
   my $saxsfile = $q->param('saxsfile');
-  my $email = $q->param('email');
+  my $email = $q->param('email') || "";
 
   my $jobname = $q->param('jobname');
   my $connectrbsfile = $q->param('connectrbsfile');
@@ -179,7 +179,7 @@ sub get_submit_page {
     my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime;
     $jobname = $sec."_".$min."_".$hour."_".$mday."_".$mon."_".$year;
   }
-  my $job = $self->make_job($jobname, $self->email);
+  my $job = $self->make_job($jobname, $email);
   my $jobdir = $job->directory;
 
   # input PDB file
@@ -288,9 +288,14 @@ sub get_submit_page {
   `echo $line >> ../submit.log`;
 
   # Inform the user of the job name and results URL
-  return $q->p("Your job " . $job->name . " has been submitted.") .
-    $q->p("You will receive an e-mail with results link once the job has finished") .
-    $q->p("Results will be found at <a href=\"" . $job->results_url . "\">this link</a>.");
+  my $out = $q->p("Your job " . $job->name . " has been submitted.");
+  if ($email) {
+    $out .= $q->p("You will receive an e-mail with the results link once "
+                  "the job has finished.");
+  }
+  $out .= $q->p("Results will be found at <a href=\"" . $job->results_url
+                . "\">this link</a>.");
+  return $out;
 }
 
 sub get_results_page {
