@@ -140,7 +140,8 @@ sub get_index_page {
 
 }
 
-# Save an uploaded file into the job directory
+# Save an uploaded file into the job directory.
+# Return the user-specified filename (sanitized).
 sub handle_uploaded_file {
     my ($upload, $output_file, $description, $allow_missing) = @_;
 
@@ -159,6 +160,7 @@ sub handle_uploaded_file {
         `tr '\r' '\n' < $output_file > ${output_file}.tmp`;
         rename("${output_file}.tmp", $output_file);
         `dos2unix $output_file`;
+        return sanitize_filename($upload);
     } elsif (!defined $allow_missing || !$allow_missing) {
         throw saliweb::frontend::InputValidationError(
                          "Please upload valid $description");
@@ -225,17 +227,20 @@ sub get_submit_page {
   }
 
   #saxs file
-  handle_uploaded_file(scalar $q->upload("saxsfile"), "$jobdir/iq.dat",
-                       "SAXS profile file");
+  my $saxsfile =
+    handle_uploaded_file(scalar $q->upload("saxsfile"), "$jobdir/iq.dat",
+                         "SAXS profile file");
 
   # hinges file
-  handle_uploaded_file(scalar $q->upload("hingefile"), "$jobdir/hinges.dat",
-                       "flexible residues file");
+  my $hingefile =
+    handle_uploaded_file(scalar $q->upload("hingefile"), "$jobdir/hinges.dat",
+                         "flexible residues file");
 
   # connectrbs file
-  handle_uploaded_file(scalar $q->upload("connectrbsfile"),
-                       "$jobdir/connectrbs.dat",
-                       "rigid bodies connect file", 1);
+  my $connectrbsfile =
+    handle_uploaded_file(scalar $q->upload("connectrbsfile"),
+                         "$jobdir/connectrbs.dat",
+                         "rigid bodies connect file", 1);
 
   my $input_line = $jobdir . "/input.txt";
   open(INFILE, "> $input_line")
@@ -249,6 +254,12 @@ sub get_submit_page {
   $cmd .= " $modelsnumber";
   print INFILE "$cmd\n";
   close(INFILE);
+
+  my $data_file_name = $jobdir . "/data.txt";
+  open(DATAFILE, "> $data_file_name")
+    or throw saliweb::frontend::InternalError("Cannot open $data_file_name: $!");
+  print DATAFILE "$pdb_file_name $hingefile $saxsfile $email $jobname $connectrbsfile $modelsnumber\n";
+  close(DATAFILE);
 
   $job->submit($email);
 

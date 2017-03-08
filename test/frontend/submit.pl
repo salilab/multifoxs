@@ -108,5 +108,12 @@ sub get_submit_frontend {
 
     like($ret, qr/Your job testjob has been submitted.*will be found at/ms,
          "submit page HTML");
+
+    # Make sure data.txt is generated
+    ok(open(FH, "incoming/data.txt"), "Open data.txt");
+    my $contents = <FH>;
+    ok(close(FH), "Close data.txt");
+    is($contents, "input.pdb test.linkers test.profile  test  100\n",
+       "Contents of data.txt");
     chdir('/') # Allow the temporary directory to be deleted
 }

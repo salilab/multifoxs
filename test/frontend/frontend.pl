@@ -79,7 +79,9 @@ my $t = new saliweb::Test('multifoxs');
               qr/Please upload valid foo/, "handle_uploaded file, missing file";
 
     # OK if allow_missing=1
-    multifoxs::handle_uploaded_file(undef, "$tmpdir/out.file", "desc", 1);
+    my $out = multifoxs::handle_uploaded_file(undef, "$tmpdir/out.file",
+                                              "desc", 1);
+    is($out, '', "missing input file, no name");
 
     ok(open(FH, "> $tmpdir/in.file"), "Open in.file");
     print FH "garbage\n";
@@ -89,7 +91,8 @@ my $t = new saliweb::Test('multifoxs');
     throws_ok { multifoxs::handle_uploaded_file(\*FH, "/foo/bar/out.file", "") }
               qr/Cannot open/, "handle_uploaded file, open failure";
 
-    multifoxs::handle_uploaded_file(\*FH, "$tmpdir/out.file", "desc");
+    $out = multifoxs::handle_uploaded_file(\*FH, "$tmpdir/out.file", "desc");
+    isnt($out, '', "missing input file, glob name");
 
     ok(open(FH, "< $tmpdir/out.file"), "Open out.file");
     my $contents = <FH>;
