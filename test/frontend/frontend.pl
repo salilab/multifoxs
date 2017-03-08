@@ -17,3 +17,14 @@ my $t = new saliweb::Test('multifoxs');
     like($links->[0], qr#<a href="http://modbase/top/">MultiFoXS Home</a>#,
          'Index link');
 }
+
+# Test get_help_page
+{
+    my $self = $t->make_frontend();
+    $self->{server_name} = "multifoxs";
+    my $txt = $self->get_help_page("download");
+    $txt = $self->get_help_page("about");
+    $txt = $self->get_help_page("contact");
+    # Can't assert that the content is OK, because we're probably in the
+    # wrong directory to find it
+}
