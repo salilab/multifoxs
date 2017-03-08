@@ -113,7 +113,7 @@ can view the server results. <br><br>
 <ul>
 
 <a name="jobname"></a>
-<li><b> Job name: </b> the server generates a default name based on the time stamp. If user has provided a job name, the server will use it as a prefix for the job name. <br><br>  
+<li><b> Job name: </b> if none is provided, the server generates a default name based on the time stamp. <br><br>  
 
 <a name="conectrbs"></a>
 <li><b>Connect rigid bodies:</b> by default the RRT sampling method reads in each PDB chain as a separate rigid body. Those are further broken down by flexible residues. In some cases, we might want to connect parts of the different chains into one rigid body. For example, if a protein is a dimer where each monomer consists of two domains and the first domain is the one involved in dimerization, such as ATG7 (PDB 3vh1). In this case we want to maintain the dimerization interface and move the second (upper) domain only. To achieve that we connect the first domain of the two chains into one rigid body by providing a file with a pair of residues one from each domain: <br> <br>
