@@ -33,7 +33,7 @@
 foxs -m 2 -p nodesXX.pdb
 </div>
 
-<p>This generates pre-computed profiles (-p) in a 7-column format file. The final profiles are calculated in step 3, with optimization of a single pair of exluded volume and hydration layer density parameters for each multi-state model.</p>
+<p>This generates pre-computed profiles (-p) in a 7-column format file. The final profiles are calculated in step 3, with optimization of a single pair of excluded volume and hydration layer density parameters for each multi-state model.</p>
 
 <p>You can easily parallelize this calculation by running several foxs jobs in parallel.</p>
 </li>
