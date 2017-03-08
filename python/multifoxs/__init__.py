@@ -1,7 +1,9 @@
 import saliweb.backend
+import os
 
 class LogError(Exception): pass
 
+class MissingOutputsError(Exception): pass
 
 class Job(saliweb.backend.Job):
     runnercls = saliweb.backend.SGERunner
@@ -23,12 +25,24 @@ perl %s/runMultiFoXS.pl %s >& multifoxs.log
         return r
 
     def postprocess(self):
-        # Check log file for common errors
+        self.check_log_file()
+        self.check_missing_outputs()
+
+    def check_log_file(self):
+        """Check log file for common errors"""
         with open('multifoxs.log') as fh:
             for line in fh:
                 if 'ERROR' in line or 'command not found' in line:
                     raise LogError("Job reported an error in multifoxs.log: %s"
                                    % line)
+
+    def check_missing_outputs(self):
+        """Check for missing output files"""
+        expected = ['chis.png', 'hist.png']
+        missing = [x for x in expected if not os.path.exists(x)]
+        if missing:
+            raise MissingOutputsError("Expected output files were not "
+                                      "generated: %s" % " ".join(missing))
 
 class Config(saliweb.backend.Config):
     def populate(self, config):
