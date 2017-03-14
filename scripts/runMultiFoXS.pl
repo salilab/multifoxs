@@ -51,7 +51,10 @@ chomp $flexresnum;
 if($flexresnum > 15) { $cmd .= " -a 10"; }
 print "$cmd\n";
 `$cmd`;
-if(not -e "nodes1.pdb") { exit; }
+if(not -e "nodes1.pdb") {
+  print "ERROR: RRT generated no conformations\n";
+  exit;
+}
 
 
 # STEP 2: run FoXS
