@@ -29,7 +29,10 @@ my $cmd;
 $cmd = "validate_profile $saxs_file > v.out";
 print "$cmd\n";
 `$cmd`;
-my $profile_size = `grep size v.out | awk '{print \$8}'` + 0;
+my $profile_size = 0;
+if (-s "v.out") {
+  $profile_size = `grep size v.out | awk '{print \$8}'` + 0;
+}
 if($profile_size < 10) {
   print "ERROR: Invalid input profile file $saxs_file\n";
   exit;
