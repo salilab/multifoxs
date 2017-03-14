@@ -27,14 +27,18 @@ perl %s/runMultiFoXS.pl %s >& multifoxs.log
         return r
 
     def postprocess(self):
-        self.check_log_file()
-        self.check_missing_outputs()
+        if not self.check_log_file():
+            self.check_missing_outputs()
 
     def check_log_file(self):
-        """Check log file for common errors"""
+        """Check log file for common errors. Return True if the log file
+           indicates a problem with user input (as opposed to a failure at
+           our end)."""
         with open('multifoxs.log') as fh:
             for line in fh:
-                if 'ERROR' in line or 'command not found' in line:
+                if 'ERROR' in line: # user error, not ours
+                    return True
+                if 'command not found' in line:
                     raise LogError("Job reported an error in multifoxs.log: %s"
                                    % line)
 

@@ -32,7 +32,8 @@ class Tests(saliweb.test.TestCase):
                 fh.write("everything ok\n")
         with open('multifoxs.log', 'w') as fh:
             fh.write("ERROR: Invalid input profile\n")
-        self.assertRaises(multifoxs.LogError, j.postprocess)
+        self.assertTrue(j.check_log_file())
+        j.postprocess() # Should run without failure
 
 if __name__ == '__main__':
     unittest.main()
