@@ -1,5 +1,6 @@
 import saliweb.backend
 import os
+import re
 
 class LogError(Exception): pass
 
@@ -8,11 +9,18 @@ class MissingOutputsError(Exception): pass
 class Job(saliweb.backend.Job):
     runnercls = saliweb.backend.SGERunner
 
-    def run(self):
-        # TODO
-        par = open('input.txt', 'r')
-        input_line = par.readline().strip()
+    def _get_input_line(self):
+        with open('input.txt') as par:
+            input_line = par.readline().rstrip('\r\n')
+        if len(input_line.split(' ')) != 5:
+            raise saliweb.backend.SanityError(
+                                  "Wrong number of fields in input.txt")
+        if not re.match('[a-zA-Z0-9 \.-]+$', input_line):
+            raise saliweb.backend.SanityError("Invalid character in input.txt")
+        return input_line
 
+    def run(self):
+        input_line = self._get_input_line()
         script = """
 date
 hostname
