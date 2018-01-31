@@ -95,6 +95,6 @@ for(my $i = 1; $i < 110; $i++) {
 
 `rm -f e?/e[2-9]?_?.pdb e?/e1[1-9]_?.pdb`;
 `zip conformations.zip nodes*.pdb`;
-`zip -r multi_foxs.zip ensembles_size_?.txt multi_state_model_?_1_1.dat e?`;
+`zip -r multi_foxs.zip ensembles_size_?.txt multi_state_model_?_1_1.dat e? chis  chis.png  gnuplot.txt  hist  hist? hist.png  plotbar.plt`;
 `rm -f nodes*.pdb.dat`;
 `rm -f nodes?.pdb nodes??.pdb nodes???.pdb`;
