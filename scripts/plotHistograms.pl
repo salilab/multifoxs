@@ -74,9 +74,9 @@ my $residuals_string = "plot f(x) lc rgb '#333333'" ;
 my $plots_string = "plot '" . $profile_file_name . "' u 1:2 lc rgb '#333333' pt 6 ps 0.8";
 
 for(my $state_number = 1; $state_number <= $N; $state_number++) {
-  my $out_file = "multi_state_model_".$state_number."_1_1.dat";
-  $residuals_string .= ", '" . $out_file . "' u 1:(\$2/\$3) w lines lw 2.5 lc rgb '" . $colors[$state_number-1] . "'";
-  $plots_string .= ", '" . $out_file . "' u 1:3 w lines lw 2.5 lc rgb '" . $colors[$state_number-1] . "'";
+  my $out_file = "multi_state_model_".$state_number."_1_1.fit";
+  $residuals_string .= ", '" . $out_file . "' u 1:((\$2-\$4)/\$3) w lines lw 2.5 lc rgb '" . $colors[$state_number-1] . "'";
+  $plots_string .= ", '" . $out_file . "' u 1:4 w lines lw 2.5 lc rgb '" . $colors[$state_number-1] . "'";
 }
 print JSOUT "$residuals_string\n";
 print JSOUT "set origin 0,0.3;set size 1,0.69; set bmargin 0;set xlabel ''; set format x ''; set ylabel 'intensity (log-scale)' offset 1; set log y\n";
@@ -91,9 +91,9 @@ print JSOUT1 "set terminal canvas solid butt size 300,250 fsize 10 lw 1.5 fontsc
 print JSOUT1 "set output 'jsoutput.1.js'; set multiplot; set origin 0,0;set size 1,0.3; set tmargin 0;set xlabel 'q';set ylabel ' ' offset 1;set format y '';set xtics nomirror;set ytics nomirror;unset key;set border 3; set style line 11 lc rgb '#808080' lt 1;set border 3 back ls 11;f(x)=1\n";
 $residuals_string = "plot f(x) lc rgb '#333333'" ;
 $plots_string = "plot '" . $profile_file_name . "' u 1:2 lc rgb '#333333' pt 6 ps 0.8";
-my $out_file = "input_iq.dat";
-$residuals_string .= ", '" . $out_file . "' u 1:(\$2/\$3) w lines lw 2.5 lc rgb '" . $colors[0] . "'";
-$plots_string .= ", '" . $out_file . "' u 1:3 w lines lw 2.5 lc rgb '" . $colors[0] . "'";
+my $out_file = "input_iq.fit";
+$residuals_string .= ", '" . $out_file . "' u 1:((\$2-\$4)/\$3) w lines lw 2.5 lc rgb '" . $colors[0] . "'";
+$plots_string .= ", '" . $out_file . "' u 1:4 w lines lw 2.5 lc rgb '" . $colors[0] . "'";
 print JSOUT1 "$residuals_string\n";
 print JSOUT1 "set origin 0,0.3;set size 1,0.69; set bmargin 0;set xlabel ''; set format x ''; set ylabel 'intensity (log-scale)' offset 1; set log y\n";
 print JSOUT1 "$plots_string\n";
