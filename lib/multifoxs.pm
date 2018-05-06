@@ -96,6 +96,7 @@ Contact: <script type=\"text/javascript\">escramble(\"dina\",\"salilab.org\")</s
 sub get_index_page {
   my $self = shift;
   my $q = $self->cgi;
+  $q->autoEscape(undef);
 
   return
 
@@ -133,6 +134,14 @@ sub get_index_page {
     $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#confnumber"}, 'Number of conformations')]),
            $q->td({ -align=>'left'}, [$q->textfield({-name=>'modelsnumber', -value=>100, -maxlength => 5, -size => 5})]),
            $q->td({ -align=>'left'}, ['Use 100 to test your setup, 10,000 for final calculation'])) .
+
+    $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#units"}, 'Experimental profile units')]),
+           $q->td({ -align=>'left'}, [$q->popup_menu({-name=>'units', 
+			                              -values=>['unknown','angstroms','nanometers'],
+                                                      -default=>'unknown',
+-labels=>{'unknown'=>'Unknown - determine automatically (default)',
+'angstroms'=>'q values are in 1/<span>&#8491;</span>',
+'nanometers'=>'q values are in nm'}})])) .
 
     $q->Tr($q->td({ -align=>'left', -colspan => 2}, [$q->submit(-value => 'Submit') . $q->reset(-value => 'Clear')])) .
 
