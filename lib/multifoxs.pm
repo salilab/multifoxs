@@ -139,9 +139,9 @@ sub get_index_page {
            $q->td({ -align=>'left'}, [$q->popup_menu({-name=>'units', 
 			                              -values=>['unknown','angstroms','nanometers'],
                                                       -default=>'unknown',
--labels=>{'unknown'=>'Unknown - determine automatically (default)',
-'angstroms'=>'q values are in 1/<span>&#8491;</span>',
-'nanometers'=>'q values are in nm'}})])) .
+                                                      -labels=>{'unknown'=>'Unknown - determine automatically (default)',
+                                                                'angstroms'=>'q values are in 1/<span>&#8491;</span>',
+                                                                'nanometers'=>'q values are in nm'}})])) .
 
     $q->Tr($q->td({ -align=>'left', -colspan => 2}, [$q->submit(-value => 'Submit') . $q->reset(-value => 'Clear')])) .
 
@@ -188,7 +188,8 @@ sub get_submit_page {
 
   my $jobname = $q->param('jobname');
   my $modelsnumber = $q->param('modelsnumber');
-
+  my $units = $q->param('units');
+  
   # Validate input
   check_optional_email($email);
 
@@ -261,6 +262,7 @@ sub get_submit_page {
       $cmd .= " -";
   }
   $cmd .= " $modelsnumber";
+  $cmd .= " $units";
   print INFILE "$cmd\n";
   close(INFILE);
 
@@ -507,7 +509,7 @@ sub printMultiStateModel {
           @c1c2 = split('\)', $tmpp[1]);
           my $c2 = $c1c2[0];
           my $plotnum = $state_number+1;
-          $return .= "<tr><th> <b> Best scoring $state_number-state model &chi; = $score  c<sub>1</sub> = $c1  c<sub>2</sub> = $c2\n";
+          $return .= "<tr><th> <b> Best scoring $state_number-state model &chi;<sup>2</sup> = $score  c<sub>1</sub> = $c1  c<sub>2</sub> = $c2\n";
           # print checkbox
           $return .= "<input type='checkbox' id='chbx$plotnum' onchange='func$plotnum()'";
           if($state_number == 2 || $state_number == 1) { $return .= " checked"; }
@@ -520,7 +522,7 @@ sub printMultiStateModel {
      gnuplot.hide_plot(\"jsoutput_3_plot_$plotnum\");
    }
   }; </script>\n";
-          my $fit_file = "multi_state_model_".$state_number."_1_1.dat";
+          my $fit_file = "multi_state_model_".$state_number."_1_1.fit";
           $fit_file = $job->get_results_file_url($fit_file);
           $return .= " show/hide <a href = \"$fit_file\"> weighted profile </a> </b> </th></tr><tr><td>";
 

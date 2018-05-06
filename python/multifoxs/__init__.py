@@ -12,7 +12,7 @@ class Job(saliweb.backend.Job):
     def _get_input_line(self):
         with open('input.txt') as par:
             input_line = par.readline().rstrip('\r\n')
-        if len(input_line.split(' ')) != 5:
+        if len(input_line.split(' ')) != 6:
             raise saliweb.backend.SanityError(
                                   "Wrong number of fields in input.txt")
         if not re.match('[a-zA-Z0-9 \.-]+$', input_line):
@@ -24,7 +24,7 @@ class Job(saliweb.backend.Job):
         script = """
 date
 hostname
-module load imp gnuplot
+module load imp-fast/last_ok_build gnuplot
 ulimit -c 0
 perl %s/runMultiFoXS.pl %s >& multifoxs.log
 """ % (self.config.script_directory, input_line)

@@ -4,8 +4,8 @@ use strict;
 use FindBin;
 use Getopt::Long;
 
-if($#ARGV < 4) {
-  print "runMultiFoXS.pl <input_pdb> <flexible_residues_file> <saxs_file> <connect_rigid_bodies_file> <number_of_models>\n";
+if($#ARGV < 5) {
+  print "runMultiFoXS.pl <input_pdb> <flexible_residues_file> <saxs_file> <connect_rigid_bodies_file> <number_of_models> <units>\n";
   exit;
 }
 
@@ -21,6 +21,17 @@ if($connect_rigid_bodies_file eq "-") { $connect_rigid_bodies_file = ""; }
 
 my $modelsnum = 100;
 if($#ARGV > 3) { $modelsnum = $ARGV[4]; }
+
+my $units = "unknown";
+if($#ARGV > 4) { $units = $ARGV[5]; }
+my $unit_option = 1;
+if($units eq "angstroms") {
+  $unit_option = 2;
+} else {
+  if($units eq "nanometers") {
+    $unit_option = 3;
+  }
+}
 
 # TODO: validate that all files exist
 my $cmd;
@@ -73,7 +84,7 @@ print "$cmd\n";
 
 # STEP 3: run MultiFoXS
 `ls nodes*.pdb.dat > filenames`;
-$cmd = "multi_foxs $saxs_file filenames -s 5 -k 1000 --max_c2 4.0";
+$cmd = "multi_foxs $saxs_file filenames -s 5 -k 1000 --max_c2 4.0 -u $unit_option";
 print "$cmd\n";
 `$cmd`;
 
