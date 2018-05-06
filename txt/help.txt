@@ -127,6 +127,9 @@ will connect the rigid body that residue 326 (chain A) belongs to with the rigid
 <a name="confnumber"></a>
 <li><b>Number of conformations:</b> by default the server generates 100 conformations from the starting structure. However this is sufficient for testing your setup only. After you see that the sampling moves the structure as needed, it is necessary to re-run the server and generate 10,000 conformations. One can also try to repeat the calculation starting from the best scoring conformation from the previous calculation.<br><br>
 
+<a name="units"></a>
+<li><b>Experimental profile units:</b> MultiFoXS supports input profiles with q in 1/<span>&#8491;</span> and 1/nm. By default the units of the input profile are determined automatically. Alternatively, the user can set the units.<br><br>
+
 </ul>
 </table>
 
