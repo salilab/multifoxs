@@ -16,6 +16,8 @@
 
 <li><a href="https://salilab.org/foxsdock/"> FoXSDock </a> - protein-protein docking with SAXS profiles
 
+<li><a href="http://bl1231.als.lbl.gov/bilbomd">BILBOMD</a> - BILBOMD allows you to determine the three-dimensional domain structure of proteins based on conformational sampling using a molecular dynamics (MD) approach. Conformational sampling is followed by structure validation using FoXS and MultiFoXS.
+
 <li><a href="https://integrativemodeling.org/"> IMP </a> -
 Integrative Modeling Platform for comprehensive structural
 characterization of biomolecules. MultiFoXS code is found in the kinematics, foxs, and multi_state modules.
@@ -24,8 +26,6 @@ characterization of biomolecules. MultiFoXS code is found in the kinematics, fox
 FoXS is also available through Chimera interactive visualization program. See
 this <a href="http://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/saxs/saxs.html">
 tutorial</a> on how to use FoXS from Chimera
-
-<li><a href="http://bl1231.als.lbl.gov/saxs_protocols/mes.php">MES</a> - minimal ensemble search
 
 <li><a href="http://www.bioisis.net"> Bioisis</a> - open access SAXS database, SAXS tutorials
 
