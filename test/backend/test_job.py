@@ -12,7 +12,7 @@ class JobTests(saliweb.test.TestCase):
         j = self.make_test_job(multifoxs.Job, 'RUNNING')
         j.config.script_directory = 'foo'
         with open(os.path.join(j.directory, 'input.txt'), 'w') as fh:
-            fh.write('1 2 3 4 5\n')
+            fh.write('1 2 3 4 5 6\n')
         cls = j._run_in_job_directory(j.run)
         self.assert_(isinstance(cls, saliweb.backend.SGERunner),
                      "SGERunner not returned")
