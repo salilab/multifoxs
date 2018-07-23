@@ -35,5 +35,13 @@ class Tests(saliweb.test.TestCase):
         self.assertTrue(j.check_log_file())
         j.postprocess() # Should run without failure
 
+    def test_postprocess_log_error(self):
+        """Test postprocess with log internal error"""
+        j = self.make_test_job(multifoxs.Job, 'RUNNING')
+        d = saliweb.test.RunInDir(j.directory)
+        with open('multifoxs.log', 'w') as fh:
+            fh.write("gnuplot: command not found\n")
+        self.assertRaises(multifoxs.LogError, j.check_log_file)
+
 if __name__ == '__main__':
     unittest.main()

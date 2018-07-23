@@ -31,7 +31,7 @@ class JobTests(saliweb.test.TestCase):
         j = self.make_test_job(multifoxs.Job, 'RUNNING')
         j.config.script_directory = 'foo'
         with open(os.path.join(j.directory, 'input.txt'), 'w') as fh:
-            fh.write('1 2 3 4 5&;6\n')
+            fh.write('1 2 3 4 5&; 6\n')
         self.assertRaises(saliweb.backend.SanityError,
                           j._run_in_job_directory, j.run)
 
