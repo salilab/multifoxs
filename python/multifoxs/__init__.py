@@ -7,7 +7,7 @@ class LogError(Exception): pass
 class MissingOutputsError(Exception): pass
 
 class Job(saliweb.backend.Job):
-    runnercls = saliweb.backend.SGERunner
+    runnercls = saliweb.backend.WyntonSGERunner
 
     def _get_input_line(self):
         with open('input.txt') as par:
@@ -24,14 +24,14 @@ class Job(saliweb.backend.Job):
         script = """
 date
 hostname
+module load Sali
 module load imp-fast/last_ok_build gnuplot
 ulimit -c 0
 perl %s/runMultiFoXS.pl %s >& multifoxs.log
 """ % (self.config.script_directory, input_line)
 
         r = self.runnercls(script)
-        r.set_sge_options('-l arch=linux-x64,h_rt=300:00:00,mem_free=4G -p 0')
-        #r.set_sge_options('-l arch=linux-x64,mem_free=4G -p 0')
+        r.set_sge_options('-l arch=lx-amd64,h_rt=300:00:00,mem_free=4G -p 0')
         return r
 
     def postprocess(self):
