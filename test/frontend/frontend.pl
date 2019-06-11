@@ -46,6 +46,20 @@ my $t = new saliweb::Test('multifoxs');
          'Header');
 }
 
+# Test get_download_page
+{
+    my $self = $t->make_frontend();
+    my $txt = $self->get_download_page();
+    like($txt, qr/fullpart/ms, 'get_download_page');
+}
+
+# Test get_start_html_parameters
+{
+    my $self = $t->make_frontend();
+    my %param = $self->get_start_html_parameters("test");
+    like($param{-style}->{-src}->[-1], qr/multifoxs\.css/);
+}
+
 # Test get_footer
 {
     my $self = $t->make_frontend();
