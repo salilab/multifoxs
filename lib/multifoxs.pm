@@ -111,7 +111,7 @@ sub get_index_page {
 			                              -values=>['unknown','angstroms','nanometers'],
                                                       -default=>'unknown',
                                                       -labels=>{'unknown'=>'Unknown - determine automatically (default)',
-                                                                'angstroms'=>'q values are in 1/<span>&#8491;</span>',
+                                                                'angstroms'=>'q values are in 1/&Aring;',
                                                                 'nanometers'=>'q values are in nm'}})])) .
 
     $q->Tr($q->td({ -align=>'left', -colspan => 2}, [$q->submit(-value => 'Submit') . $q->reset(-value => 'Clear')])) .
