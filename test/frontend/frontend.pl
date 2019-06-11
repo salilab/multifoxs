@@ -31,14 +31,6 @@ my $t = new saliweb::Test('multifoxs');
     # wrong directory to find it
 }
 
-# Test get_navigation_lab
-{
-    my $self = $t->make_frontend();
-    my $txt = $self->get_navigation_lab();
-    like($txt, qr#<div.*About MultiFoXS.*Sali Lab.*</div>#ms,
-         'Navigation');
-}
-
 # Test get_project_menu
 {
     my $self = $t->make_frontend();
@@ -46,11 +38,11 @@ my $t = new saliweb::Test('multifoxs');
     is($txt, "", 'Project menu');
 }
 
-# Test get_header
+# Test get_header_page_title
 {
     my $self = $t->make_frontend();
-    my $txt = $self->get_header();
-    like($txt, qr#<div.*modeling with SAXS.*</div>#ms,
+    my $txt = $self->get_header_page_title();
+    like($txt, qr#<table.*modeling with SAXS.*</table>#ms,
          'Header');
 }
 

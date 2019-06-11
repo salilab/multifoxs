@@ -8,52 +8,21 @@ use File::Copy;
 
 our @ISA = "saliweb::frontend";
 
-sub _display_content {
-  my ($self, $content) = @_;
-  print $content;
+# Add our own CSS to the page header
+sub get_start_html_parameters {
+  my ($self, $style) = @_;
+  my %param = $self->SUPER::get_start_html_parameters($style);
+  push @{$param{-style}->{'-src'}}, 'html/multifoxs.css';
+  return %param;
 }
 
-sub _display_web_page {
-  my ($self, $content) = @_;
-  my $prefix = $self->start_html("/foxs/css/server.css") . "<div id='container'>" . $self->get_header();
-  my $suffix = $self->get_footer() . "</div>\n" . $self->end_html;
-  my $navigation = $self->get_navigation_lab();
-  print $prefix;
-  print $navigation;
-  $self->_display_content($content);
-  print $suffix;
+sub get_download_page {
+  my ($self) = @_;
+  return "<div id=\"fullpart\">".$self->get_text_file("download.txt")."</div>";
 }
-
-sub get_help_page {
-  my ($self, $display_type) = @_;
-  my $file;
-  if ($display_type eq "about") {
-    $self->set_page_title("Method Description");
-    $file = "about.txt";
-  } elsif ($display_type eq "download") {
-    $self->set_page_title("download");
-    $file = "download.txt";
-  } else {
-    return $self->SUPER::get_help_page($display_type);
-  }
-  return $self->get_text_file($file);
-}
-
 
 sub new {
     return saliweb::frontend::new(@_, "##CONFIG##");
-}
-
-sub get_navigation_lab {
-  return "<div id=\"navigation_lab\">
-      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=about\">About MultiFoXS</a>&nbsp;
-      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs\">Web Server</a>&nbsp;
-      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=help\">Help</a>&nbsp;
-      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=download\">Download</a>&nbsp;
-      &bull;&nbsp; <a href=\"https://salilab.org/foxs\">FoXS</a>&nbsp;
-      &bull;&nbsp; <a href=\"https://salilab.org\">Sali Lab</a>&nbsp;
-      &bull;&nbsp; <a href=\"https://salilab.org/imp\">IMP</a>&nbsp;
-      &bull;&nbsp; <a href=\"https://modbase.compbio.ucsf.edu/multifoxs/help.cgi?type=links\">Links</a>&nbsp;</div>\n";
 }
 
 sub get_navigation_links {
@@ -61,9 +30,11 @@ sub get_navigation_links {
     my $q = $self->cgi;
     return [
         $q->a({-href=>$self->index_url}, "MultiFoXS Home"),
-        $q->a({-href=>$self->queue_url}, "MultiFoXS Current queue"),
-        $q->a({-href=>$self->help_url}, "MultiFoXS Help"),
-        $q->a({-href=>$self->contact_url}, "MultiFoXS Contact")
+        $q->a({-href=>$self->about_url}, "About MultiFoXS"),
+        $q->a({-href=>$self->queue_url}, "Queue"),
+        $q->a({-href=>$self->help_url}, "Help"),
+        $q->a({-href=>$self->download_url}, "Download"),
+        $q->a({-href=>$self->contact_url}, "Contact")
         ];
 }
 
@@ -72,22 +43,22 @@ sub get_project_menu {
   return "";
 }
 
-sub get_header {
-  return "<div id='header1'>  
+sub get_header_page_title {
+  return "
     <table> <tbody> <tr> <td align='left'>
                          <table><tr><td><img src=\"//modbase.compbio.ucsf.edu/multifoxs/html/logo.png\" alt='Logo' align = 'right' height = '60'/></td></tr>
                                 <tr><td><h3><font color='#B22222'> Multi-state modeling with SAXS profiles </font> </h3> </td></tr></table>
                          </td>
                          <td align='right'><img src=\"//salilab.org/foxsdock/logo2.gif\" alt='Profile' height = '90'/></td></tr>
-  </tbody> </table></div>\n";
+  </tbody> </table>\n";
 }
 
 
 sub get_footer {
   my $self = shift;
   my $version = $self->version_link;
-  return "<hr size='2' width=\"80%\"/>\n
-<table><tr><td align='left'> If you use MultiFoXS (version $version), please cite: </td> </tr></table>
+  return "<hr size='2' width='80%' />\n
+<p class='citereq'>If you use MultiFoXS (version $version), please cite:</p>
 <div id='address'>
 D. Schneidman-Duhovny, M. Hammel, JA. Tainer, and A. Sali. FoXS, FoXSDock and MultiFoXS: Single-state and multi-state structural modeling of proteins and their complexes based on SAXS profiles. NAR 2016 [ <a href = \"//doi.org/10.1093/nar/gkw389\"> FREE Full Text </a> ]<br />
 Contact: <script type=\"text/javascript\">escramble(\"dina\",\"salilab.org\")</script></div>\n";
