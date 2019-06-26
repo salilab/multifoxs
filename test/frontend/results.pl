@@ -76,3 +76,14 @@ END
 
     chdir("/");
 }
+
+# Check get_file_mime_type
+{
+    my $frontend = $t->make_frontend();
+    is($frontend->get_file_mime_type('jsoutput.3.js'), 'text/javascript',
+       "get_file_mime_type, javascript");
+    is($frontend->get_file_mime_type('foo.png'), 'image/png',
+       "get_file_mime_type, image file");
+    is($frontend->get_file_mime_type('foo.log'), 'text/plain',
+       "get_file_mime_type, log file");
+}

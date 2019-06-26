@@ -256,6 +256,15 @@ sub get_submit_page {
   return $out;
 }
 
+sub get_file_mime_type {
+    my ($self, $file) = @_;
+    if ($file =~ /jsoutput\..*\.js/) {
+        return 'text/javascript';
+    } else {
+        return $self->SUPER::get_file_mime_type($file);
+    }
+}
+
 sub get_results_page {
   my ($self, $job) = @_;
   my $q = $self->cgi;
