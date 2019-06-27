@@ -12,7 +12,7 @@ our @ISA = "saliweb::frontend";
 sub get_start_html_parameters {
   my ($self, $style) = @_;
   my %param = $self->SUPER::get_start_html_parameters($style);
-  push @{$param{-style}->{'-src'}}, 'html/multifoxs.css';
+  push @{$param{-style}->{'-src'}}, $self->htmlroot . 'multifoxs.css';
   return %param;
 }
 
