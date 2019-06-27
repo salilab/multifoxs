@@ -69,7 +69,7 @@ END
     $ret = $frontend->get_results_page($job);
     like($ret, '/Best scoring 1-state model.*' .
                'gnuplot\.show_plot\(\"jsoutput_3_plot_2\"\);.*' .
-               'testjob\/multi_state_model_1_1_1\.fit\?passwd=foo.*' .
+               'testjob\/multi_state_model_1_1_1\.dat\?passwd=foo.*' .
                'testjob\/e1\/e1_0\.pdb\?passwd=foo.*' .
                'backbone OFF; wireframe OFF; spacefill OFF;/ms',
          "display ok job with ensemble size 1");
