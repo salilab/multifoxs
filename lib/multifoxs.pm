@@ -502,7 +502,7 @@ sub printMultiStateModel {
      gnuplot.hide_plot(\"jsoutput_3_plot_$plotnum\");
    }
   }; </script>\n";
-          my $fit_file = "multi_state_model_".$state_number."_1_1.fit";
+          my $fit_file = "multi_state_model_".$state_number."_1_1.dat";
           $fit_file = $job->get_results_file_url($fit_file);
           $return .= " show/hide <a href = \"$fit_file\"> weighted profile </a> </b> </th></tr><tr><td>";
 
