@@ -67,7 +67,7 @@ while(<DATA>) {
         `cp $fileName $newFileName`;
       }
 
-      `rg $newFileName >& rg_tmp.out`;
+      `compute_rg $newFileName >& rg_tmp.out`;
       my $rg = `grep Rg rg_tmp.out | awk '{print \$3}'`;
       chomp $rg;
       my $weight = 0;

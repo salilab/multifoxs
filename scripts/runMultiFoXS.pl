@@ -94,7 +94,7 @@ print "$cmd\n";
 for(my $i = 1; $i < 110; $i++) {
   my $nodes_file = "nodes".$i.".pdb";
   if(-e $nodes_file) {
-    $cmd = "rg -m 2 $nodes_file >> rg.out";
+    $cmd = "compute_rg -m 2 $nodes_file >> rg.out";
     print "$cmd\n";
     `$cmd`;
   }
