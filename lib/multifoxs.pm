@@ -89,7 +89,7 @@ sub get_index_page {
            $q->td({ -align=>'left'}, [$q->filefield({-name=>'saxsfile', -size => 10})])) .
 
     $q->Tr($q->td({ -align=>'left'}, [$q->a({-href => $self->help_url . "#email"}, $q->b('e-mail address'))]),
-           $q->td({ -align=>'left'}, [$q->textfield({-name => 'email'})]),
+           $q->td({ -align=>'left'}, [$q->textfield({-name => 'email', -value=>$self->email})]),
            $q->td({ -align=>'left'}, ['(the results are sent to this address, optional)'])) .
 
     $q->Tr($q->td({ -align=>'left', -colspan => 2}, [$q->submit(-value => 'Submit') . $q->reset(-value => 'Clear')])) .
