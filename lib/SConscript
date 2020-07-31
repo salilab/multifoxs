@@ -1,5 +1,5 @@
 Import('env')
 
 env.InstallPerl(['multifoxs.pm'])
-env.InstallHTML(['logo.png', 'rpa.png', 'atg7.png', 'ligase.pdb', 'ligase_linkers.txt', 'ligase_iq.dat', 'prion.pdb', 'prion_linkers.txt', 'prion_iq.dat', '1fguA.pdb', '1fguA_linkers.txt', '1fguA_iq.dat'])
+env.InstallHTML(['logo.png', 'logo2.gif', 'rpa.png', 'atg7.png', 'ligase.pdb', 'ligase_linkers.txt', 'ligase_iq.dat', 'prion.pdb', 'prion_linkers.txt', 'prion_iq.dat', '1fguA.pdb', '1fguA_linkers.txt', '1fguA_iq.dat'])
 

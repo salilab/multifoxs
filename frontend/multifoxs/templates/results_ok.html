@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block title %}MultiFoXS Results{% endblock %}
+
+{% block body %}
+<script type="text/javascript" src="/foxs/gnuplot_js/canvastext.js"></script>
+<script type="text/javascript" src="/foxs/gnuplot_js/gnuplot_common.js"></script>
+<script type="text/javascript" src="/foxs/gnuplot_js/gnuplot_dashedlines.js"></script>
+<script type="text/javascript" src="/foxs/gnuplot_js/gnuplot_mouse.js"></script>
+<script type="text/javascript">
+var canvas, ctx;
+gnuplot.grid_lines = true;
+gnuplot.zoomed = false;
+gnuplot.active_plot_name = "gnuplot_canvas";
+gnuplot.active_plot = gnuplot.dummyplot;
+gnuplot.dummyplot = function() {};
+function gnuplot_canvas( plot ) { gnuplot.active_plot(); };
+</script>
+
+<table width="90%">
+  <tr>
+    <td>Input protein</td>
+    <td>Flexible residues</td>
+    <td>SAXS profile</td>
+    <td>e-mail address</td>
+    <td># of conformations</td>
+    <td colspan="2">Download results</td>
+  </tr>
+  <tr>
+    <td><a href="{{ job.get_results_file_url(input_data.pdb) }}">{{ input_data.pdb }}</a></td>
+    <td><a href="{{ job.get_results_file_url("hinges.dat") }}">{{ input_data.flexres }}</a></td>
+    <td><a href="{{ job.get_results_file_url("iq.dat") }}">{{ input_data.profile }}</a></td>
+    <td>{{ input_data.email }}</td>
+    <td>{{ input_data.num_conformations }}</td>
+    <td><a href="{{ job.get_results_file_url("conformations.zip") }}">conformations</a></td>
+    <td><a href="{{ job.get_results_file_url("multi_foxs.zip") }}">MultiFoXS output files</a></td>
+  </tr>
+</table>
+
+<table align="center"><tr>
+  <table align="center"><tr><td align="center"><div  id="wrapper2"><img src="{{ job.get_results_file_url("chis.png") }}" alt='Chi scores' height='250' width='300'/></div></td>
+
+<script type="text/javascript" src="{{ job.get_results_file_url("jsoutput.3.js") }}"></script>
+<td><div  id="wrapper2">
+<canvas id="jsoutput_3" height='250' width='300' tabindex="0" oncontextmenu="return false;">
+<div class='box'><h2>Your browser does not support the HTML 5 canvas element</h2></div>
+</canvas>
+
+<div id="buttonWrapper">
+<input type="button" id="minus" onclick="gnuplot.unzoom();"/></div></div>
+<script type="text/javascript">
+  if (window.attachEvent) {window.attachEvent('onload', jsoutput_3);}
+else if (window.addEventListener) {window.addEventListener('load', jsoutput_3, false);}
+else {document.addEventListener('load', jsoutput_3, false);}
+</script>
+</td>
+
+<script type="text/javascript">
+  gnuplot.show_plot("jsoutput_3_plot_2");
+  var state_number, plotnum;
+  for(state_number = 1; state_number <= {{max_state_number}}; state_number++) {
+    plotnum = state_number+1;
+    if(state_number != 2 && state_number != 1) {
+      gnuplot.hide_plot("jsoutput_3_plot_${plotnum}");
+    }
+  }
+</script>
+
+<td align="center"><div  id="wrapper2"><img src="{{ job.get_results_file_url("hist.png") }}" alt='Histogram' height='250' width='300'/></div></td>
+</tr></table></tr>
+
+<script type="text/javascript" src="/foxs/jsmol2/js/JSmoljQuery.js"></script>
+<script type="text/javascript" src="/foxs/jsmol2/js/JSmoljQueryExt.js"></script>
+<script type="text/javascript" src="/foxs/jsmol2/js/JSmolCore.js"></script>
+<script type="text/javascript" src="/foxs/jsmol2/js/JSmolApplet.js"></script>
+<script type="text/javascript" src="/foxs/jsmol2/js/JSmolApi.js"></script>
+<script type="text/javascript" src="/foxs/jsmol2/js/j2sjmol.js"></script>
+<script type="text/javascript" src="/foxs/jsmol2/js/JSmol.js"></script>
+
+<script type="text/javascript">
+var myInfo1 = {
+        height: '98%',
+        width: '98%',
+        jarFile: "JmolApplet.jar",
+        jarPath: "/foxs/jsmol2/../",
+        j2sPath: "/foxs/jsmol2/j2s/",
+        use: 'HTML5',
+        console: "myJmol1_infodiv",
+        debug: false
+};
+</script>
+
+{{ include_jmoltable()|safe }}
+
+<table><tr><td><a href="{{ job.get_results_file_url("multifoxs.log") }}"> view log </a> </td> </tr></table>
+
+{% endblock %}

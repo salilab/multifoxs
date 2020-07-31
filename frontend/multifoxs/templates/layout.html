@@ -1,0 +1,39 @@
+{% extends "saliweb/layout.html" %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename='css/multifoxs.css') }}" />
+{% endblock %}
+
+{% block header_page_title %}
+<table>
+  <tbody>
+    <tr>
+      <td align='left'>
+      <table><tr><td>
+      <img src="{{ url_for("static", filename="img/logo.png") }}" alt='Logo' align='right' height='60'/>
+      </td></tr>
+  <tr><td><h3><font color='#B22222'> Multi-state modeling with SAXS profiles </font> </h3> </td></tr></table>
+  </td>
+  <td align='right'><img src="{{ url_for("static", filename="img/logo2.gif") }}" alt='Profile' height = '90'/></td></tr>
+  </tbody>
+</table>
+{% endblock %}
+
+{% block navigation %}
+{{ get_navigation_links(
+       [(url_for("index"), "MultiFoXS Home"),
+        (url_for("about"), "About MultiFoXS"),
+        (url_for("job"), "Queue"),
+        (url_for("help"), "Help"),
+        (url_for("download"), "Download"),
+        (url_for("contact"), "Contact")])
+}}
+{% endblock %}
+
+{% block footer %}
+<hr size='2' width='80%' />
+<p class='citereq'>If you use MultiFoXS (version <a href="https://github.com/salilab/multifoxs">{{ config.VERSION }}</a>), please cite:</p>
+<div id='address'>
+D. Schneidman-Duhovny, M. Hammel, JA. Tainer, and A. Sali. FoXS, FoXSDock and MultiFoXS: Single-state and multi-state structural modeling of proteins and their complexes based on SAXS profiles. NAR 2016 [ <a href = "//doi.org/10.1093/nar/gkw389"> FREE Full Text </a> ]<br />
+Contact: <script type="text/javascript">escramble("dina","salilab.org")</script></div>
+{% endblock %}

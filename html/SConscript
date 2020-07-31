@@ -1,3 +1,4 @@
 Import('env')
 
-env.InstallHTML(['multifoxs.css', 'zoom_out_icon.png'])
+env.InstallHTML(['css/multifoxs.css'], 'css')
+env.InstallHTML(['img/logo.png', 'img/logo2.gif', 'img/zoom_out_icon.png'], 'img')
