@@ -16,7 +16,7 @@ env.InstallAdminTools()
 env.InstallCGIScripts()
 
 Export('env')
-SConscript('python/multifoxs/SConscript')
+SConscript('backend/multifoxs/SConscript')
 SConscript('html/SConscript')
 SConscript('lib/SConscript')
 SConscript('txt/SConscript')
