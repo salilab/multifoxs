@@ -1,6 +1,6 @@
 sudo: false
 language: python
-dist: bionic
+dist: focal
 python:
   - 3.6
   - 3.7
