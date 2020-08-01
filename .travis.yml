@@ -2,14 +2,9 @@ sudo: false
 language: python
 dist: xenial
 python:
-  - 2.7
   - 3.6
   - 3.7
   - 3.8
-matrix:
-  include:
-    - dist: trusty
-      python: 2.6
 addons:
   apt:
     packages:
@@ -18,6 +13,7 @@ cache:
   pip: true
 install:
   - export PYTHONPATH=$(echo $(dirname $(which python))/../lib/python*/site-packages)
+  - pip install coverage flask
   - git clone --depth=5 https://github.com/salilab/saliweb
   - (cd saliweb && scons modeller_key=UNKNOWN pythondir=$PYTHONPATH perldir=~/perl5/lib/perl5 prefix=~/usr webdir=~/www install && touch $PYTHONPATH/saliweb/frontend/config.py)
 script:
