@@ -57,13 +57,15 @@ else {document.addEventListener('load', jsoutput_3, false);}
 
 <script type="text/javascript">
   gnuplot.show_plot("jsoutput_3_plot_2");
-  var state_number, plotnum;
-  for(state_number = 1; state_number <= {{max_state_number}}; state_number++) {
-    plotnum = state_number+1;
-    if(state_number != 2 && state_number != 1) {
-      gnuplot.hide_plot("jsoutput_3_plot_${plotnum}");
-    }
-  }
+</script>
+<script type="text/javascript">
+  gnuplot.hide_plot("jsoutput_3_plot_4");
+</script>
+<script type="text/javascript">
+  gnuplot.hide_plot("jsoutput_3_plot_5");
+</script>
+<script type="text/javascript">
+  gnuplot.hide_plot("jsoutput_3_plot_6");
 </script>
 
 <td align="center"><div  id="wrapper2"><img src="{{ job.get_results_file_url("hist.png") }}" alt='Histogram' height='250' width='300'/></div></td>

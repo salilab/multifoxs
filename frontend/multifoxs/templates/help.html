@@ -91,19 +91,19 @@ can view the server results. <br><br>
 <a href="{{ url_for("static", filename="1fguA.pdb") }}"> PDB </a> <br>
 <a href="{{ url_for("static", filename="1fguA_linkers.txt") }}"> Flexible residues </a> <br>
 <a href="{{ url_for("static", filename="1fguA_iq.dat") }}"> SAXS profile </a> <br>
-<a href="https://modbase.compbio.ucsf.edu/multifoxs/results.cgi/1fgu_17_39_12_29_11_115?passwd=ewpRW9inBV"> MultiFoXS output </a>
+<a href="{{ url_for("results", name="1fgu_17_39_12_29_11_115", passwd="ewpRW9inBV") }}"> MultiFoXS output </a>
 
 <li><b> DNA ligase without DNA </b> - multi-domain protein, data from Cotner-Gohara et al. Biochemistry 2010: <br>
 <a href="{{ url_for("static", filename="ligase.pdb") }}"> PDB </a> <br>
 <a href="{{ url_for("static", filename="ligase_linkers.txt") }}"> Flexible residues </a> <br>
 <a href="{{ url_for("static", filename="ligase_iq.dat") }}"> SAXS profile </a> <br>
-<a href="https://modbase.compbio.ucsf.edu/multifoxs/results.cgi/ligase1000_54_25_15_5_9_115?passwd=lFMsIIx49D"> MultiFoXS output </a>
+<a href="{{ url_for("results", name="ligase1000_54_25_15_5_9_115", passwd="lFMsIIx49D") }}"> MultiFoXS output </a>
 
 <li><b> Full length prion protein </b> - a protein with 100-residue disordered region, data from Carter at al. Biophys J. 2015: <br>
 <a href="{{ url_for("static", filename="prion.pdb") }}"> PDB </a> <br>
 <a href="{{ url_for("static", filename="prion_linkers.txt") }}"> Flexible residues </a> <br>
 <a href="{{ url_for("static", filename="prion_iq.dat") }}"> SAXS profile </a> <br>
-<a href="https://modbase.compbio.ucsf.edu/multifoxs/results.cgi/prion10000_15_18_16_5_9_115?passwd=jZX9tlSX3u"> MultiFoXS output </a>
+<a href="{{ url_for("results", name="prion10000_15_18_16_5_9_115", passwd="jZX9tlSX3u") }}"> MultiFoXS output </a>
 
 
 </ul></table>
