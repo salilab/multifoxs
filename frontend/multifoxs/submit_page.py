@@ -11,14 +11,16 @@ def handle_new_job():
 
     jobname = request.form.get('jobname')
     modelsnumber = request.form.get('modelsnumber', type=int)
-    units = request.form.get('units', type=int)
+    units = request.form.get('units')
 
     # Validate input
     saliweb.frontend.check_email(email, required=False)
-    if modelsnumber <= 0 or modelsnumber > 10000:
+    if modelsnumber is None or modelsnumber <= 0 or modelsnumber > 10000:
         raise InputValidationError(
-                "Invalid value for number of models %d. "
-                "Must be > 0 and <= 10000" % modelsnumber)
+                "Invalid value for number of models. "
+                "Must be > 0 and <= 10000")
+    if units not in ("unknown", "angstroms", "nanometers"):
+        raise InputValidationError("Invalid units: %s" % units)
 
     job = saliweb.frontend.IncomingJob(jobname)
     pdb_file_name = handle_pdb(request.form.get('pdbcode'),
@@ -37,12 +39,11 @@ def handle_new_job():
 
     # write parameters
     with open(job.get_path('input.txt'), 'w') as fh:
-        fh.write("%s hinges.dat iq.dat - %d %d\n"
+        fh.write("%s hinges.dat iq.dat %s %s %s\n"
                  % (pdb_file_name,
                     real_connect if os.path.exists(job.get_path(real_connect))
                                  else "-",
                     modelsnumber, units))
-        fh.write("%s TCR.pdb antigen_seq.txt\n" % pmhc_file_name)
     with open(job.get_path('data.txt'), 'w') as fh:
         fh.write("%s %s %s %s %s %s %d\n"
                  % (pdb_file_name, hingefile, saxsfile, email, jobname,
@@ -93,4 +94,4 @@ def handle_uploaded_file(fh, job, output_file, description,
     if os.stat(full_fname).st_size == 0:
         raise InputValidationError("You have uploaded an empty %s"
                                    % description)
-    return secure_filename(fh.filename)
+    return secure_filename(os.path.basename(fh.filename))
