@@ -14,8 +14,8 @@ class JobTests(saliweb.test.TestCase):
         with open(os.path.join(j.directory, 'input.txt'), 'w') as fh:
             fh.write('1 2 3 4 5 6\n')
         cls = j._run_in_job_directory(j.run)
-        self.assert_(isinstance(cls, saliweb.backend.SGERunner),
-                     "SGERunner not returned")
+        self.assertIsInstance(cls, saliweb.backend.SGERunner,
+                              "SGERunner not returned")
 
     def test_bad_number_of_fields(self):
         """Test bad number of fields in input.txt"""

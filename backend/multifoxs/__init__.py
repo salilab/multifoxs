@@ -15,7 +15,7 @@ class Job(saliweb.backend.Job):
         if len(input_line.split(' ')) != 6:
             raise saliweb.backend.SanityError(
                                   "Wrong number of fields in input.txt")
-        if not re.match('[a-zA-Z0-9 \.-]+$', input_line):
+        if not re.match(r'[a-zA-Z0-9 \.-]+$', input_line):
             raise saliweb.backend.SanityError("Invalid character in input.txt")
         return input_line
 
