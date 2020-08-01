@@ -1,32 +1,52 @@
 from flask import request
 import saliweb.frontend
+from saliweb.frontend import InputValidationError
 from werkzeug.utils import secure_filename
 import os
 import re
 
 
 def handle_new_job():
-    mhctype = request.form.get('mhctype')
-    mhcpdbfile = request.files.get('mhcpdbfile')
-    tcrfile = request.files.get('tcrfile')
-    antigen = request.form.get('antigen')
     email = request.form.get('email')
-    jobname = request.form.get('jobname')
 
+    jobname = request.form.get('jobname')
+    modelsnumber = request.form.get('modelsnumber', type=int)
+    units = request.form.get('units', type=int)
+
+    # Validate input
     saliweb.frontend.check_email(email, required=False)
+    if modelsnumber <= 0 or modelsnumber > 10000:
+        raise InputValidationError(
+                "Invalid value for number of models %d. "
+                "Must be > 0 and <= 10000" % modelsnumber)
 
     job = saliweb.frontend.IncomingJob(jobname)
+    pdb_file_name = handle_pdb(request.form.get('pdbcode'),
+                               request.files.get("pdbfile"), job)
 
-    pmhc_file_name = get_peptide_mhc_file(job, mhctype, mhcpdbfile)
-    get_tcr_file(job, tcrfile)
-    get_antigen(job, antigen)
+    saxsfile = handle_uploaded_file(
+            request.files.get("saxsfile"), job, "iq.dat", "SAXS profile file")
+    hingefile = handle_uploaded_file(
+            request.files.get("hingefile"), job, "hinges.dat",
+            "flexible residues file")
+
+    real_connect = "connectrbs.dat"
+    connectrbsfile = handle_uploaded_file(
+            request.files.get("connectrbsfile"), job, real_connect,
+            "rigid bodies connect file", allow_missing=True)
 
     # write parameters
     with open(job.get_path('input.txt'), 'w') as fh:
+        fh.write("%s hinges.dat iq.dat - %d %d\n"
+                 % (pdb_file_name,
+                    real_connect if os.path.exists(job.get_path(real_connect))
+                                 else "-",
+                    modelsnumber, units))
         fh.write("%s TCR.pdb antigen_seq.txt\n" % pmhc_file_name)
     with open(job.get_path('data.txt'), 'w') as fh:
-        fh.write("%s %s %s %s %s\n"
-                 % (mhctype, mhcpdbfile, tcrfile, email, jobname))
+        fh.write("%s %s %s %s %s %s %d\n"
+                 % (pdb_file_name, hingefile, saxsfile, email, jobname,
+                    connectrbsfile, modelsnumber))
 
     job.submit(email)
 
@@ -43,45 +63,34 @@ def has_atoms(fname):
                 return True
 
 
-def get_peptide_mhc_file(job, mhctype, mhcpdbfile):
-    """Get input peptide-MHC by type or uploaded PDB file"""
-    if mhcpdbfile:
-        fname = 'pMHC.pdb'
+def handle_pdb(pdb_code, pdb_file, job):
+    """Handle input PDB code or file. Return file name."""
+    if pdb_file:
+        fname = 'input.pdb'
         full_fname = job.get_path(fname)
-        mhcpdbfile.save(full_fname)  # todo: check chain IDs
+        pdb_file.save(full_fname)
         if not has_atoms(full_fname):
-            raise saliweb.frontend.InputValidationError(
-                "PDB file contains no ATOM records!")
+            raise InputValidationError("PDB file contains no ATOM records!")
         return fname
+    elif pdb_code:
+        fname = saliweb.frontend.get_pdb_chains(pdb_code, job.directory)
+        return [os.path.basename(fname)]
     else:
-        raise saliweb.frontend.InputValidationError(
-                "Error in input PDB: please specify MHC type or upload file")
+        raise InputValidationError("Error in protein input: please specify "
+                                   "PDB code or upload file")
 
 
-def get_tcr_file(job, tcrfile):
-    """Handle upload of TCR structure"""
-    if tcrfile:
-        fname = job.get_path('TCR.pdb')
-        atoms = 0
-        with open(fname, 'wb') as out:
-            for line in tcrfile:
-                if line.startswith(b'ATOM  '):
-                    atoms += 1
-                    out.write(line)
-        if atoms == 0:
-            raise saliweb.frontend.InputValidationError(
-                "You have uploaded a TCR file containing no atoms")
-    else:
-        raise saliweb.frontend.InputValidationError(
-                "Please upload valid TCR file")
-
-
-def get_antigen(job, antigen):
-    """Handle upload of antigen sequence"""
-    if antigen:
-        with open(job.get_path('antigen_seq.txt'), 'w') as fh:
-            fh.write(antigen)
-        # todo: validate sequence
-    else:
-        raise saliweb.frontend.InputValidationError(
-                "Please provide antigen sequence")
+def handle_uploaded_file(fh, job, output_file, description,
+                         allow_missing=False):
+    """Save an uploaded file into the job directory.
+       Return the user-specified filename (sanitized)."""
+    if not fh:
+        if not allow_missing:
+            raise InputValidationError("Please upload valid %s" % description)
+        return
+    full_fname = job.get_path(output_file)
+    fh.save(full_fname)
+    if os.stat(full_fname).st_size == 0:
+        raise InputValidationError("You have uploaded an empty %s"
+                                   % description)
+    return secure_filename(fh.filename)
