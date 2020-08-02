@@ -34,7 +34,7 @@ chains of the PDB file are used.
 302 A<br/>
 </p>
 
-<img src="html/rpa.png" alt='RPA' height='200' />
+<img src="{{ url_for("static", filename="img/rpa.png") }}" alt='RPA' height='200' />
 
 <p> <b> <font color="red"> IMPORTANT! </font> If you use TextEdit on Mac: create new file, Go to "Format" and select "Make Plain Text" (the Mac Default is Rich Text which cannot be used).</b> <br/> <br/></p>
 </li>
@@ -108,7 +108,7 @@ can view the server results. <br/><br/>
 
 will connect the rigid body that residue 326 (chain A) belongs to with the rigid body that residue 513 (chain B) belongs to. The result will be 3 rigid bodies connected by two linkers (blue).<br/><br/>
 
-<img src="html/atg7.png" alt='ATG7' height='200' />
+<img src="{{ url_for("static", filename="img/atg7.png") }}" alt='ATG7' height='200' />
 </li>
 
 <li><a name="confnumber"></a><b>Number of conformations:</b> by default the server generates 100 conformations from the starting structure. However this is sufficient for testing your setup only. After you see that the sampling moves the structure as needed, it is necessary to re-run the server and generate 10,000 conformations. One can also try to repeat the calculation starting from the best scoring conformation from the previous calculation.<br/><br/>
