@@ -59,21 +59,33 @@ class Tests(saliweb.test.TestCase):
         data['units'] = 'unknown'
 
         # Successful submission (no email)
-        data['pdbfile'] = open(pdbf, 'rb')
-        data['saxsfile'] = open(saxsf, 'rb')
-        data['hingefile'] = open(linkf, 'rb')
+        data = {'modelsnumber': '100', 'units': 'unknown',
+                'pdbfile': open(pdbf, 'rb'), 'saxsfile': open(saxsf, 'rb'),
+                'hingefile': open(linkf, 'rb'), 'jobname': 'foobar'}
         rv = c.post('/job', data=data)
         self.assertEqual(rv.status_code, 200)
-        r = re.compile(b'Your job job has been submitted.*'
+        r = re.compile(b'Your job <b>foobar</b> has been submitted.*'
                        b'Results will be found at',
                        re.MULTILINE | re.DOTALL)
         self.assertRegex(rv.data, r)
 
         # Make sure data.txt is generated
-        with open(os.path.join(incoming.tmpdir, 'job', 'data.txt')) as fh:
+        with open(os.path.join(incoming.tmpdir, 'foobar', 'data.txt')) as fh:
             contents = fh.read()
         self.assertEqual(contents,
-                "input.pdb test.linkers test.profile None None None 100\n")
+                "input.pdb test.linkers test.profile None foobar None 100\n")
+
+        # Successful submission (with email)
+        data = {'modelsnumber': '100', 'units': 'unknown',
+                'pdbfile': open(pdbf, 'rb'), 'saxsfile': open(saxsf, 'rb'),
+                'hingefile': open(linkf, 'rb'), 'email': 'test@example.com'}
+        rv = c.post('/job', data=data)
+        self.assertEqual(rv.status_code, 200)
+        r = re.compile(b'Your job <b>job\S+</b> has been submitted.*'
+                       b'Results will be found at.*'
+                       b'You will be notified at test@example.com when',
+                       re.MULTILINE | re.DOTALL)
+        self.assertRegex(rv.data, r)
 
 
 if __name__ == '__main__':
