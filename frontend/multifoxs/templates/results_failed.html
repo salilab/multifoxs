@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}MultiFoXS Results{% endblock %}
+
+{% block body %}
+<table width="90%">
+  <tr>
+    <td>Input protein</td>
+    <td>Flexible residues</td>
+    <td>SAXS profile</td>
+    <td>e-mail address</td>
+  </tr>
+  <tr>
+    <td><a href="{{ job.get_results_file_url(input_data.pdb) }}">{{ input_data.pdb }}</a></td>
+    <td><a href="{{ job.get_results_file_url("hinges.dat") }}">{{ input_data.flexres }}</a></td>
+    <td><a href="{{ job.get_results_file_url("iq.dat") }}">{{ input_data.profile }}</a></td>
+    <td>{{ input_data.email }}</td>
+  </tr>
+</table>
+
+<p>Unfortunately, MultiFoXS failed to generate any results for your system.
+For more information, please check <a href="{{ job.get_results_file_url("multifoxs.log") }}">the log file</a></p>
+
+{% endblock %}

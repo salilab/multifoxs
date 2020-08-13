@@ -66,5 +66,22 @@ class Tests(saliweb.test.TestCase):
                     re.MULTILINE | re.DOTALL)
             self.assertRegex(rv.data, r)
 
+    def test_failed_job(self):
+        """Test display of failed job"""
+        with saliweb.test.make_frontend_job('testjob3') as j:
+            j.make_file("data.txt",
+                    "testpdb testflexres testprofile test4")
+            c = multifoxs.app.test_client()
+            rv = c.get('/job/testjob3?passwd=%s' % j.passwd)
+            r = re.compile(
+                    rb'job\/testjob3\/testpdb\?passwd=.*'
+                    rb'job\/testjob3\/hinges\.dat\?passwd=.*'
+                    rb'job\/testjob3\/iq\.dat\?passwd=.*'
+                    rb'Unfortunately, MultiFoXS failed to generate any.*'
+                    rb'job\/testjob3\/multifoxs\.log\?passwd=.*',
+                    re.MULTILINE | re.DOTALL)
+            self.assertRegex(rv.data, r)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -4,18 +4,20 @@ import os
 import collections
 
 InputData = collections.namedtuple('InputData',
-        ['pdb', 'flexres', 'profile', 'email', 'num_conformations'])
+        ['pdb', 'flexres', 'profile', 'email'])
 
 PDB = collections.namedtuple('PDB', ['filename', 'rg', 'weight', 'num'])
 
-def read_input_data(job):
+def read_num_conformations(job):
     with open(job.get_path('filenames')) as fh:
-        num_conformations = len(fh.readlines())
+        return len(fh.readlines())
+
+
+def read_input_data(job):
     with open(job.get_path('data.txt')) as fh:
         data = fh.readline().rstrip('\r\n').split()
         pdb, flexres, profile, email = data[:4]
-        return InputData(pdb=pdb, flexres=flexres, profile=profile,
-                         email=email, num_conformations=num_conformations)
+        return InputData(pdb=pdb, flexres=flexres, profile=profile, email=email)
 
 
 class MultiStateModel(object):
@@ -64,8 +66,15 @@ def get_multi_state_models(job, max_state):
 
 
 def show_results_page(job):
-    max_state = 5
     input_data = read_input_data(job)
+    try:
+        num_conformations = read_num_conformations(job)
+    except FileNotFoundError:
+        return saliweb.frontend.render_results_template("results_failed.html",
+                job=job, input_data=input_data)
+
+    max_state = 5
     return saliweb.frontend.render_results_template("results_ok.html",
             job=job, input_data=input_data, max_state_number=max_state,
-            multi_state_models=list(get_multi_state_models(job, max_state)))
+            multi_state_models=list(get_multi_state_models(job, max_state)),
+            num_conformations=num_conformations)
