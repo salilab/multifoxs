@@ -58,7 +58,8 @@ def handle_new_job():
 
 def has_atoms(fname):
     """Return True iff fname has at least one ATOM record"""
-    with open(fname) as fh:
+    # Use latin1 to avoid decode errors with 8-bit characters
+    with open(fname, encoding='latin1') as fh:
         for line in fh:
             if line.startswith('ATOM  '):
                 return True
