@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/salilab/multifoxs.svg?branch=master)](https://travis-ci.com/salilab/multifoxs)
+[![Build Status](https://github.com/salilab/multifoxs/workflows/build/badge.svg?branch=master)](https://github.com/salilab/multifoxs/actions?query=workflow%3Abuild)
 [![codecov](https://codecov.io/gh/salilab/multifoxs/branch/master/graph/badge.svg)](https://codecov.io/gh/salilab/multifoxs)
 [![Code Climate](https://codeclimate.com/github/salilab/multifoxs/badges/gpa.svg)](https://codeclimate.com/github/salilab/multifoxs)
 
