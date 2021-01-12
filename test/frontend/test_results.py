@@ -23,8 +23,9 @@ class Tests(saliweb.test.TestCase):
     def test_ok_job(self):
         """Test display of OK job"""
         with saliweb.test.make_frontend_job('testjob2') as j:
-            j.make_file("data.txt",
-                    "testpdb testflexres testprofile test4")
+            j.make_file(
+                "data.txt",
+                "testpdb testflexres testprofile test4")
             j.make_file("filenames", "file1\nfile2\nfile3\n")
             c = multifoxs.app.test_client()
             rv = c.get('/job/testjob2?passwd=%s' % j.passwd)
@@ -40,8 +41,9 @@ class Tests(saliweb.test.TestCase):
                     re.MULTILINE | re.DOTALL)
             self.assertRegex(rv.data, r)
 
-            j.make_file("ensembles_size_1.txt",
-"""1 |  2.39 | x1 2.39 (0.99, 2.97)
+            j.make_file(
+                "ensembles_size_1.txt",
+                """1 |  2.39 | x1 2.39 (0.99, 2.97)
     0   | 1.000 (1.000, 1.000) | nodes27_m44.pdb.dat (0.004)
 2 |  2.60 | x1 2.60 (0.99, 3.26)
     1   | 1.000 (1.000, 1.000) | nodes49_m15.pdb.dat (0.004)
@@ -69,8 +71,9 @@ class Tests(saliweb.test.TestCase):
     def test_failed_job(self):
         """Test display of failed job"""
         with saliweb.test.make_frontend_job('testjob3') as j:
-            j.make_file("data.txt",
-                    "testpdb testflexres testprofile test4")
+            j.make_file(
+                "data.txt",
+                "testpdb testflexres testprofile test4")
             c = multifoxs.app.test_client()
             rv = c.get('/job/testjob3?passwd=%s' % j.passwd)
             r = re.compile(

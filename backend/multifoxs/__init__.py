@@ -2,9 +2,14 @@ import saliweb.backend
 import os
 import re
 
-class LogError(Exception): pass
 
-class MissingOutputsError(Exception): pass
+class LogError(Exception):
+    pass
+
+
+class MissingOutputsError(Exception):
+    pass
+
 
 class Job(saliweb.backend.Job):
     runnercls = saliweb.backend.WyntonSGERunner
@@ -44,7 +49,7 @@ perl %s/runMultiFoXS.pl %s >& multifoxs.log
            our end)."""
         with open('multifoxs.log') as fh:
             for line in fh:
-                if 'ERROR' in line: # user error, not ours
+                if 'ERROR' in line:  # user error, not ours
                     return True
                 if 'command not found' in line:
                     raise LogError("Job reported an error in multifoxs.log: %s"
@@ -57,6 +62,7 @@ perl %s/runMultiFoXS.pl %s >& multifoxs.log
         if missing:
             raise MissingOutputsError("Expected output files were not "
                                       "generated: %s" % " ".join(missing))
+
 
 class Config(saliweb.backend.Config):
     def populate(self, config):

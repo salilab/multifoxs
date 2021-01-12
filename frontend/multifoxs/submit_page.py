@@ -3,7 +3,6 @@ import saliweb.frontend
 from saliweb.frontend import InputValidationError
 from werkzeug.utils import secure_filename
 import os
-import re
 
 
 def handle_new_job():
@@ -42,7 +41,7 @@ def handle_new_job():
         fh.write("%s hinges.dat iq.dat %s %s %s\n"
                  % (pdb_file_name,
                     real_connect if os.path.exists(job.get_path(real_connect))
-                                 else "-",
+                    else "-",
                     modelsnumber, units))
     with open(job.get_path('data.txt'), 'w') as fh:
         fh.write("%s %s %s %s %s %s %d\n"

@@ -2,7 +2,6 @@ import unittest
 import saliweb.test
 import os
 import re
-from werkzeug.datastructures import FileStorage
 
 # Import the multifoxs frontend with mocks
 multifoxs = saliweb.test.import_mocked_frontend("multifoxs", __file__,
@@ -22,8 +21,9 @@ class Tests(saliweb.test.TestCase):
         with open(pdbfile, 'w') as fh:
             fh.write("garbage\n")
 
-        rv = c.post('/job', data={'pdbfile': open(pdbfile, 'rb'),
-            'modelsnumber': "5", "units": "unknown"})
+        rv = c.post(
+            '/job', data={'pdbfile': open(pdbfile, 'rb'),
+                          'modelsnumber': "5", "units": "unknown"})
         self.assertEqual(rv.status_code, 400)
         self.assertIn(b'PDB file contains no ATOM records', rv.data)
 
@@ -36,8 +36,9 @@ class Tests(saliweb.test.TestCase):
         t = saliweb.test.TempDir()
         pdbf = os.path.join(t.tmpdir, 'test.pdb')
         with open(pdbf, 'w') as fh:
-            fh.write("REMARK\n"
-                     "ATOM      2  CA  ALA     1      26.711  14.576   5.091\n")
+            fh.write(
+                "REMARK\n"
+                "ATOM      2  CA  ALA     1      26.711  14.576   5.091\n")
         saxsf = os.path.join(t.tmpdir, 'test.profile')
         with open(saxsf, 'w') as fh:
             fh.write("0.00000    9656627.00000000 2027.89172363\n")
@@ -72,8 +73,9 @@ class Tests(saliweb.test.TestCase):
         # Make sure data.txt is generated
         with open(os.path.join(incoming.tmpdir, 'foobar', 'data.txt')) as fh:
             contents = fh.read()
-        self.assertEqual(contents,
-                "input.pdb test.linkers test.profile None foobar None 100\n")
+        self.assertEqual(
+            contents,
+            "input.pdb test.linkers test.profile None foobar None 100\n")
 
         # Successful submission (with email)
         data = {'modelsnumber': '100', 'units': 'unknown',
@@ -81,7 +83,7 @@ class Tests(saliweb.test.TestCase):
                 'hingefile': open(linkf, 'rb'), 'email': 'test@example.com'}
         rv = c.post('/job', data=data)
         self.assertEqual(rv.status_code, 200)
-        r = re.compile(b'Your job <b>job\S+</b> has been submitted.*'
+        r = re.compile(b'Your job <b>job\\S+</b> has been submitted.*'
                        b'Results will be found at.*'
                        b'You will be notified at test@example.com when',
                        re.MULTILINE | re.DOTALL)

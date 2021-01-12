@@ -1,12 +1,12 @@
-from flask import request, abort
 import saliweb.frontend
 import os
 import collections
 
-InputData = collections.namedtuple('InputData',
-        ['pdb', 'flexres', 'profile', 'email'])
+InputData = collections.namedtuple(
+    'InputData', ['pdb', 'flexres', 'profile', 'email'])
 
 PDB = collections.namedtuple('PDB', ['filename', 'rg', 'weight', 'num'])
+
 
 def read_num_conformations(job):
     with open(job.get_path('filenames')) as fh:
@@ -17,7 +17,8 @@ def read_input_data(job):
     with open(job.get_path('data.txt')) as fh:
         data = fh.readline().rstrip('\r\n').split()
         pdb, flexres, profile, email = data[:4]
-        return InputData(pdb=pdb, flexres=flexres, profile=profile, email=email)
+        return InputData(pdb=pdb, flexres=flexres, profile=profile,
+                         email=email)
 
 
 class MultiStateModel(object):
@@ -34,7 +35,7 @@ class MultiStateModel(object):
         with open(job.get_path('rg%d' % self.state_num)) as fh:
             for i in range(self.state_num):
                 filename = "e%d/e%d_%d.pdb" % (self.state_num,
-                                                    self.model_num, i)
+                                               self.model_num, i)
                 rg, weight = fh.readline().split()
                 yield PDB(filename=filename, rg=float(rg),
                           weight=float(weight), num=i)
@@ -54,11 +55,11 @@ class MultiStateModel(object):
 
 
 def get_multi_state_models(job, max_state):
-    colors = [ "x1a9850", # green
-               "xe26261", # red
-               "x3288bd", # blue
-               "x00FFFF",
-               "xA6CEE3" ]
+    colors = ["x1a9850",  # green
+              "xe26261",  # red
+              "x3288bd",  # blue
+              "x00FFFF",
+              "xA6CEE3"]
     for size in range(1, max_state + 1):
         fn = job.get_path("ensembles_size_%d.txt" % size)
         if os.path.exists(fn):
@@ -70,11 +71,13 @@ def show_results_page(job):
     try:
         num_conformations = read_num_conformations(job)
     except FileNotFoundError:
-        return saliweb.frontend.render_results_template("results_failed.html",
-                job=job, input_data=input_data)
+        return saliweb.frontend.render_results_template(
+            "results_failed.html",
+            job=job, input_data=input_data)
 
     max_state = 5
-    return saliweb.frontend.render_results_template("results_ok.html",
-            job=job, input_data=input_data, max_state_number=max_state,
-            multi_state_models=list(get_multi_state_models(job, max_state)),
-            num_conformations=num_conformations)
+    return saliweb.frontend.render_results_template(
+        "results_ok.html",
+        job=job, input_data=input_data, max_state_number=max_state,
+        multi_state_models=list(get_multi_state_models(job, max_state)),
+        num_conformations=num_conformations)

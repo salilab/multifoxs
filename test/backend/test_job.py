@@ -4,6 +4,7 @@ import saliweb.test
 import saliweb.backend
 import os
 
+
 class JobTests(saliweb.test.TestCase):
     """Check custom Job class"""
 
@@ -34,6 +35,7 @@ class JobTests(saliweb.test.TestCase):
             fh.write('1 2 3 4 5&; 6\n')
         self.assertRaises(saliweb.backend.SanityError,
                           j._run_in_job_directory, j.run)
+
 
 if __name__ == '__main__':
     unittest.main()

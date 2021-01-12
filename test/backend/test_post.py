@@ -1,7 +1,7 @@
 import unittest
 import multifoxs
 import saliweb.test
-import os
+
 
 class Tests(saliweb.test.TestCase):
 
@@ -13,6 +13,7 @@ class Tests(saliweb.test.TestCase):
             with open(fname, 'w') as fh:
                 fh.write("everything ok\n")
         j.postprocess()
+        del d
 
     def test_postprocess_missing_outputs(self):
         """Test postprocess with missing outputs"""
@@ -22,6 +23,7 @@ class Tests(saliweb.test.TestCase):
             with open(fname, 'w') as fh:
                 fh.write("everything ok\n")
         self.assertRaises(multifoxs.MissingOutputsError, j.postprocess)
+        del d
 
     def test_postprocess_bad_log(self):
         """Test postprocess with bad log file"""
@@ -33,7 +35,8 @@ class Tests(saliweb.test.TestCase):
         with open('multifoxs.log', 'w') as fh:
             fh.write("ERROR: Invalid input profile\n")
         self.assertTrue(j.check_log_file())
-        j.postprocess() # Should run without failure
+        j.postprocess()  # Should run without failure
+        del d
 
     def test_postprocess_log_error(self):
         """Test postprocess with log internal error"""
@@ -42,6 +45,8 @@ class Tests(saliweb.test.TestCase):
         with open('multifoxs.log', 'w') as fh:
             fh.write("gnuplot: command not found\n")
         self.assertRaises(multifoxs.LogError, j.check_log_file)
+        del d
+
 
 if __name__ == '__main__':
     unittest.main()
