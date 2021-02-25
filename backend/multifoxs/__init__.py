@@ -47,7 +47,7 @@ perl %s/runMultiFoXS.pl %s >& multifoxs.log
         """Check log file for common errors. Return True if the log file
            indicates a problem with user input (as opposed to a failure at
            our end)."""
-        with open('multifoxs.log') as fh:
+        with open('multifoxs.log', encoding='latin1') as fh:
             for line in fh:
                 if 'ERROR' in line:  # user error, not ours
                     return True
