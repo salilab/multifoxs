@@ -72,21 +72,15 @@ else {document.addEventListener('load', jsoutput_3, false);}
 <td align="center"><div  id="wrapper2"><img src="{{ job.get_results_file_url("hist.png") }}" alt='Histogram' height='250' width='300'/></div></td>
 </tr></table></tr>
 
-<script type="text/javascript" src="/foxs/jsmol2/js/JSmoljQuery.js"></script>
-<script type="text/javascript" src="/foxs/jsmol2/js/JSmoljQueryExt.js"></script>
-<script type="text/javascript" src="/foxs/jsmol2/js/JSmolCore.js"></script>
-<script type="text/javascript" src="/foxs/jsmol2/js/JSmolApplet.js"></script>
-<script type="text/javascript" src="/foxs/jsmol2/js/JSmolApi.js"></script>
-<script type="text/javascript" src="/foxs/jsmol2/js/j2sjmol.js"></script>
-<script type="text/javascript" src="/foxs/jsmol2/js/JSmol.js"></script>
+<script type="text/javascript" src="/jsmol/JSmol.min.js"></script>
 
 <script type="text/javascript">
 var myInfo1 = {
         height: '98%',
         width: '98%',
         jarFile: "JmolApplet.jar",
-        jarPath: "/foxs/jsmol2/../",
-        j2sPath: "/foxs/jsmol2/j2s/",
+        jarPath: "/jsmol/",
+        j2sPath: "/jsmol/j2s/",
         use: 'HTML5',
         console: "myJmol1_infodiv",
         debug: false
