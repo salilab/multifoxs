@@ -87,13 +87,7 @@ print $gnuplot_string;
 
 print "</tr></table></tr>\n";
 
-print "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmoljQuery.js\"></script>\n";
-print "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmoljQueryExt.js\"></script>\n";
-print "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolCore.js\"></script>\n";
-print "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolApplet.js\"></script>\n";
-print "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmolApi.js\"></script>\n";
-print "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/j2sjmol.js\"></script>\n";
-print "<script type=\"text/javascript\" src=\"/foxs/jsmol2/js/JSmol.js\"></script>\n";
+print "<script type=\"text/javascript\" src=\"/jsmol/JSmol.min.js\"></script>\n";
 
 
 print "<script type=\"text/javascript\">\n";
@@ -101,8 +95,8 @@ print "var myInfo1 = {\n";
 print "        height: '98%',\n";
 print "        width: '98%',\n";
 print "        jarFile: \"JmolApplet.jar\",\n";
-print "        jarPath: \"/foxs/jsmol2/../\",\n";
-print "        j2sPath: \"/foxs/jsmol2/j2s/\",\n";
+print "        jarPath: \"/jsmol/\",\n";
+print "        j2sPath: \"/jsmol/j2s/\",\n";
 print "        use: 'HTML5',\n";
 print "        console: \"myJmol1_infodiv\",\n";
 print "        debug: false\n";

@@ -37,7 +37,7 @@ class Tests(saliweb.test.TestCase):
                     rb'job\/testjob2\/conformations\.zip\?passwd=.*'
                     rb'Your browser does not support the HTML 5 canvas.*'
                     rb'gnuplot\.show_plot\(\"jsoutput_3_plot_2\"\).*'
-                    rb'foxs\/jsmol2\/js\/JSmol\.js.*',
+                    rb'\/jsmol\/JSmol\.min\.js.*',
                     re.MULTILINE | re.DOTALL)
             self.assertRegex(rv.data, r)
 
