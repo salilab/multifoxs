@@ -16,6 +16,19 @@ p.citereq {
   -webkit-box-shadow: 5px 5px 3px #AAA;
 }
 
+div.pdb {
+  position: relative;
+  border: 1px solid #9C9898;
+  width: 300px;
+  height: 250px;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+  -webkit-border-radius: 1em;
+  border-radius: 0.2em;
+  box-shadow: 1px 1px 5px #AAA;
+  -webkit-box-shadow: 5px 5px 3px #AAA;
+}
+
 #buttonWrapper {
   position: absolute;
   width: 50px;

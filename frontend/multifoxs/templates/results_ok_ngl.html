@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+
+{% block title %}MultiFoXS Results{% endblock %}
+
+{% block body %}
+<script type="text/javascript" src="/saliweb/gnuplot5/canvastext.js"></script>
+<script type="text/javascript" src="/saliweb/gnuplot5/gnuplot_common.js"></script>
+<script type="text/javascript" src="/saliweb/gnuplot5/gnuplot_dashedlines.js"></script>
+<script type="text/javascript" src="/saliweb/gnuplot5/gnuplot_mouse.js"></script>
+<script type="text/javascript" src="/saliweb/gnuplot5/gnuplot_foxs.js"></script>
+<script type="text/javascript">
+var canvas, ctx;
+gnuplot.grid_lines = true;
+gnuplot.zoomed = false;
+gnuplot.active_plot_name = "gnuplot_canvas";
+gnuplot.active_plot = gnuplot.dummyplot;
+gnuplot.dummyplot = function() {};
+function gnuplot_canvas( plot ) { gnuplot.active_plot(); };
+</script>
+
+<table width="90%">
+  <tr>
+    <td>Input protein</td>
+    <td>Flexible residues</td>
+    <td>SAXS profile</td>
+    <td>e-mail address</td>
+    <td># of conformations</td>
+    <td colspan="2">Download results</td>
+  </tr>
+  <tr>
+    <td><a href="{{ job.get_results_file_url(input_data.pdb) }}">{{ input_data.pdb }}</a></td>
+    <td><a href="{{ job.get_results_file_url("hinges.dat") }}">{{ input_data.flexres }}</a></td>
+    <td><a href="{{ job.get_results_file_url("iq.dat") }}">{{ input_data.profile }}</a></td>
+    <td>{{ input_data.email }}</td>
+    <td>{{ num_conformations }}</td>
+    <td><a href="{{ job.get_results_file_url("conformations.zip") }}">conformations</a></td>
+    <td><a href="{{ job.get_results_file_url("multi_foxs.zip") }}">MultiFoXS output files</a></td>
+  </tr>
+</table>
+
+<table align="center"><tr>
+  <table align="center"><tr><td align="center"><div  id="wrapper2"><img src="{{ job.get_results_file_url("chis.png") }}" alt='Chi scores' height='250' width='300'/></div></td>
+
+<script type="text/javascript" src="{{ job.get_results_file_url("jsoutput.3.js") }}"></script>
+<td><div  id="wrapper2">
+<canvas id="jsoutput_3" height='250' width='300' tabindex="0" oncontextmenu="return false;">
+<div class='box'><h2>Your browser does not support the HTML 5 canvas element</h2></div>
+</canvas>
+
+<div id="buttonWrapper">
+<input type="button" id="minus" onclick="gnuplot.unzoom();"/></div></div>
+<script type="text/javascript">
+  if (window.attachEvent) {window.attachEvent('onload', jsoutput_3);}
+else if (window.addEventListener) {window.addEventListener('load', jsoutput_3, false);}
+else {document.addEventListener('load', jsoutput_3, false);}
+</script>
+</td>
+
+<script type="text/javascript">
+  gnuplot.show_plot("jsoutput_3_plot_2");
+</script>
+<script type="text/javascript">
+  gnuplot.hide_plot("jsoutput_3_plot_4");
+</script>
+<script type="text/javascript">
+  gnuplot.hide_plot("jsoutput_3_plot_5");
+</script>
+<script type="text/javascript">
+  gnuplot.hide_plot("jsoutput_3_plot_6");
+</script>
+
+<td align="center"><div  id="wrapper2"><img src="{{ job.get_results_file_url("hist.png") }}" alt='Histogram' height='250' width='300'/></div></td>
+</tr></table></tr>
+
+<script type="text/javascript" src="/saliweb/ngl/ngl.js"></script>
+
+{% for msmodel in multi_state_models %}
+<tr><th> <b> Best scoring {{ msmodel.state_num }}-state model
+&chi;<sup>2</sup> = {{ msmodel.score }}
+c<sub>1</sub> = {{ msmodel.c1 }} c<sub>2</sub> = {{ msmodel.c2 }}
+
+<input type='checkbox' id='chbx{{ msmodel.state_num + 1 }}' onchange='func{{ msmodel.state_num + 1 }}()' {{ "checked" if msmodel.state_num in (1,2) }}/>
+<script type="text/javascript">
+function func{{ msmodel.state_num + 1 }}() {
+   if(document.getElementById("chbx{{ msmodel.state_num + 1}}").checked==true){
+     gnuplot.show_plot("jsoutput_3_plot_{{ msmodel.state_num + 1 }}");
+   } else {
+     gnuplot.hide_plot("jsoutput_3_plot_{{ msmodel.state_num + 1 }}");
+   }
+}; </script>
+show/hide <a href="{{ job.get_results_file_url(msmodel.fit_file) }}"> weighted profile </a></b> </th></tr><tr><td>
+
+  <table align="center"> <tr>
+  {% for pdb in msmodel.pdbs %}
+  <td><table><tr><th><b><a href="{{ job.get_results_file_url(pdb.filename) }}">PDB{{ pdb.num+1 }}</a> R<sub>g</sub> = {{ pdb.rg }} w<sub>{{ pdb.num+1 }}</sub> = {{ pdb.weight }}</b></th></tr><tr><td>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function () {
+  var stage = new NGL.Stage("pdb{{ msmodel.state_num }}_{{ pdb.num }}");
+
+  var schemeID = NGL.ColormakerRegistry.addScheme(function (params) {
+    this.atomColor = function(atom) { return 0{{ msmodel.color }} };
+  });
+
+  stage.loadFile("{{ job.get_results_file_url(pdb.filename) }}").then(function (component) {
+    component.addRepresentation("cartoon", {color: schemeID });
+    component.autoView();
+  });
+
+  stage.setParameters({
+    backgroundColor: "white"
+  });
+
+  window.addEventListener("resize", function(event) {
+    stage.handleResize();
+  }, false );
+});
+</script>
+<div id="pdb{{ msmodel.state_num }}_{{ pdb.num }}" class="pdb"></div>
+</td></tr></table> </td>
+  {% endfor %}
+  </tr> </table> </td></tr>
+{% endfor %}
+
+<table><tr><td><a href="{{ job.get_results_file_url("multifoxs.log") }}"> view log </a> </td> </tr></table>
+
+{% endblock %}
