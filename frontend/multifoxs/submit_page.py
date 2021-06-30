@@ -55,23 +55,13 @@ def handle_new_job():
                                                    job=job)
 
 
-def has_atoms(fname):
-    """Return True iff fname has at least one ATOM record"""
-    # Use latin1 to avoid decode errors with 8-bit characters
-    with open(fname, encoding='latin1') as fh:
-        for line in fh:
-            if line.startswith('ATOM  '):
-                return True
-
-
 def handle_pdb(pdb_code, pdb_file, job):
     """Handle input PDB code or file. Return file name."""
     if pdb_file:
         fname = 'input.pdb'
         full_fname = job.get_path(fname)
         pdb_file.save(full_fname)
-        if not has_atoms(full_fname):
-            raise InputValidationError("PDB file contains no ATOM records!")
+        saliweb.frontend.check_pdb(full_fname)
         return fname
     elif pdb_code:
         fname = saliweb.frontend.get_pdb_chains(pdb_code, job.directory)

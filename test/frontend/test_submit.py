@@ -26,7 +26,8 @@ class Tests(saliweb.test.TestCase):
                 '/job', data={'pdbfile': open(pdbfile, 'rb'),
                               'modelsnumber': "5", "units": "unknown"})
             self.assertEqual(rv.status_code, 400)
-            self.assertIn(b'PDB file contains no ATOM records', rv.data)
+            self.assertIn(b'PDB file contains no ATOM or HETATM records',
+                          rv.data)
 
     def test_submit_page(self):
         """Test submit page"""
