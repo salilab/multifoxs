@@ -27,6 +27,7 @@ class Tests(saliweb.test.TestCase):
                 "data.txt",
                 "testpdb testflexres testprofile test4")
             j.make_file("filenames", "file1\nfile2\nfile3\n")
+            j.make_file("chis", "1 1.16 1.58\n2 1.08 0.14\ngarbage\n\n")
             c = multifoxs.app.test_client()
             rv = c.get('/job/testjob2?passwd=%s' % j.passwd)
             r = re.compile(

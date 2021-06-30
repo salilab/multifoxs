@@ -3,6 +3,9 @@
 {% block title %}MultiFoXS Results{% endblock %}
 
 {% block body %}
+<script src="https://cdn.bokeh.org/bokeh/release/{{ bokeh.js }}"
+        integrity="sha384-{{ bokeh.hash }}"
+        crossorigin="anonymous"></script>
 <script type="text/javascript" src="/saliweb/gnuplot5/canvastext.js"></script>
 <script type="text/javascript" src="/saliweb/gnuplot5/gnuplot_common.js"></script>
 <script type="text/javascript" src="/saliweb/gnuplot5/gnuplot_dashedlines.js"></script>
@@ -17,6 +20,8 @@ gnuplot.active_plot = gnuplot.dummyplot;
 gnuplot.dummyplot = function() {};
 function gnuplot_canvas( plot ) { gnuplot.active_plot(); };
 </script>
+
+{{ chiplot.js|safe }}
 
 <table width="90%">
   <tr>
@@ -39,7 +44,7 @@ function gnuplot_canvas( plot ) { gnuplot.active_plot(); };
 </table>
 
 <table align="center"><tr>
-  <table align="center"><tr><td align="center"><div  id="wrapper2"><img src="{{ job.get_results_file_url("chis.png") }}" alt='Chi scores' height='250' width='300'/></div></td>
+  <table align="center"><tr><td align="center"><div id="wrapper2">{{ chiplot.div|safe }}</div></td>
 
 <script type="text/javascript" src="{{ job.get_results_file_url("jsoutput.3.js") }}"></script>
 <td><div  id="wrapper2">
