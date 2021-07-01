@@ -9,7 +9,7 @@ class Tests(saliweb.test.TestCase):
         """Test postprocess with everything OK"""
         j = self.make_test_job(multifoxs.Job, 'RUNNING')
         with saliweb.test.working_directory(j.directory):
-            for fname in ('multifoxs.log', 'chis.png', 'hist.png'):
+            for fname in ('multifoxs.log', 'chis.png', 'hist.png', 'chis'):
                 with open(fname, 'w') as fh:
                     fh.write("everything ok\n")
             j.postprocess()

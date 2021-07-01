@@ -57,7 +57,7 @@ perl %s/runMultiFoXS.pl %s >& multifoxs.log
 
     def check_missing_outputs(self):
         """Check for missing output files"""
-        expected = ['chis.png', 'hist.png']
+        expected = ['chis.png', 'hist.png', 'chis']
         missing = [x for x in expected if not os.path.exists(x)]
         if missing:
             raise MissingOutputsError("Expected output files were not "
