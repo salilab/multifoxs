@@ -26,7 +26,8 @@ def handle_new_job():
                                request.files.get("pdbfile"), job)
 
     saxsfile = handle_uploaded_file(
-            request.files.get("saxsfile"), job, "iq.dat", "SAXS profile file")
+            request.files.get("saxsfile"), job, "iq.dat", "SAXS profile file",
+            check=check_profile)
     hingefile = handle_uploaded_file(
             request.files.get("hingefile"), job, "hinges.dat",
             "flexible residues file")
@@ -72,7 +73,7 @@ def handle_pdb(pdb_code, pdb_file, job):
 
 
 def handle_uploaded_file(fh, job, output_file, description,
-                         allow_missing=False):
+                         allow_missing=False, check=None):
     """Save an uploaded file into the job directory.
        Return the user-specified filename (sanitized)."""
     if not fh:
@@ -84,4 +85,27 @@ def handle_uploaded_file(fh, job, output_file, description,
     if os.stat(full_fname).st_size == 0:
         raise InputValidationError("You have uploaded an empty %s"
                                    % description)
+    if check:
+        check(full_fname)
     return secure_filename(os.path.basename(fh.filename))
+
+
+def check_profile(fname):
+    """Check that the profile contains at least one valid line"""
+    with open(fname, encoding='latin1') as fh:
+        for line in fh:
+            if line.startswith('#'):
+                continue
+            spl = line.split()
+            if len(spl) >= 2:
+                try:
+                    _ = float(spl[0])
+                    sc = float(spl[1])
+                    if sc > 1e-15:
+                        return
+                except ValueError:
+                    pass
+    raise InputValidationError(
+        "Invalid profile uploaded. Profiles should be text files with each "
+        "line containing a q value and measured scattering, "
+        "which should be non-zero and positive")
