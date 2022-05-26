@@ -105,7 +105,7 @@ class Tests(saliweb.test.TestCase):
                 contents = fh.read()
             self.assertEqual(
                 contents,
-                "input.pdb test.linkers test.profile None foobar None 100\n")
+                "input.pdb test.linkers test.profile None 100\n")
 
             # Successful submission (with email)
             data = {'modelsnumber': '100', 'units': 'unknown',

@@ -45,9 +45,9 @@ def handle_new_job():
                     else "-",
                     modelsnumber, units))
     with open(job.get_path('data.txt'), 'w') as fh:
-        fh.write("%s %s %s %s %s %s %d\n"
-                 % (pdb_file_name, hingefile, saxsfile, email, jobname,
-                    connectrbsfile, modelsnumber))
+        fh.write("%s %s %s %s %d\n"
+                 % (pdb_file_name, hingefile, saxsfile, connectrbsfile,
+                    modelsnumber))
 
     job.submit(email)
 
