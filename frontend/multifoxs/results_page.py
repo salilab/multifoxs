@@ -10,7 +10,7 @@ from bokeh.models.ranges import Range1d
 
 
 InputData = collections.namedtuple(
-    'InputData', ['pdb', 'flexres', 'profile', 'email'])
+    'InputData', ['pdb', 'flexres', 'profile'])
 
 PDB = collections.namedtuple('PDB', ['filename', 'rg', 'weight', 'num'])
 
@@ -23,9 +23,8 @@ def read_num_conformations(job):
 def read_input_data(job):
     with open(job.get_path('data.txt')) as fh:
         data = fh.readline().rstrip('\r\n').split()
-        pdb, flexres, profile, email = data[:4]
-        return InputData(pdb=pdb, flexres=flexres, profile=profile,
-                         email=email)
+        pdb, flexres, profile = data[:3]
+        return InputData(pdb=pdb, flexres=flexres, profile=profile)
 
 
 class MultiStateModel(object):

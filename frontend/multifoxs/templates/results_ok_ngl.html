@@ -31,7 +31,7 @@ function gnuplot_canvas( plot ) { gnuplot.active_plot(); };
     <td><a href="{{ job.get_results_file_url(input_data.pdb) }}">{{ input_data.pdb }}</a></td>
     <td><a href="{{ job.get_results_file_url("hinges.dat") }}">{{ input_data.flexres }}</a></td>
     <td><a href="{{ job.get_results_file_url("iq.dat") }}">{{ input_data.profile }}</a></td>
-    <td>{{ input_data.email }}</td>
+    <td>{{ job.email }}</td>
     <td>{{ num_conformations }}</td>
     <td><a href="{{ job.get_results_file_url("conformations.zip") }}">conformations</a></td>
     <td><a href="{{ job.get_results_file_url("multi_foxs.zip") }}">MultiFoXS output files</a></td>

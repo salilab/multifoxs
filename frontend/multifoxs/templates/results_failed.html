@@ -14,7 +14,7 @@
     <td><a href="{{ job.get_results_file_url(input_data.pdb) }}">{{ input_data.pdb }}</a></td>
     <td><a href="{{ job.get_results_file_url("hinges.dat") }}">{{ input_data.flexres }}</a></td>
     <td><a href="{{ job.get_results_file_url("iq.dat") }}">{{ input_data.profile }}</a></td>
-    <td>{{ input_data.email }}</td>
+    <td>{{ job.email }}</td>
   </tr>
 </table>
 
