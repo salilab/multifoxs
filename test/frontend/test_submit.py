@@ -72,6 +72,9 @@ class Tests(saliweb.test.TestCase):
                          "more garbage, ignored\n"
                          "0.1 -0.5\n"
                          "0.00000    9656627.00000000 2027.89172363\n")
+            emptyf = os.path.join(tmpdir, 'emptyf')
+            with open(emptyf, 'w') as fh:
+                pass
             linkf = os.path.join(tmpdir, 'test.linkers')
             with open(linkf, 'w') as fh:
                 fh.write("189 A\n")
@@ -88,6 +91,31 @@ class Tests(saliweb.test.TestCase):
             self.assertEqual(rv.status_code, 400)
             self.assertIn(b'Invalid units', rv.data)
             data['units'] = 'unknown'
+
+            # Missing PDB file
+            data = {'modelsnumber': '100', 'units': 'unknown',
+                    'saxsfile': open(saxsf, 'rb'),
+                    'hingefile': open(linkf, 'rb'), 'jobname': 'foobar'}
+            rv = c.post('/job', data=data)
+            self.assertEqual(rv.status_code, 400)
+            self.assertIn(b'please specify PDB code or upload file', rv.data)
+
+            # Missing SAXS file
+            data = {'modelsnumber': '100', 'units': 'unknown',
+                    'pdbfile': open(pdbf, 'rb'),
+                    'hingefile': open(linkf, 'rb'), 'jobname': 'foobar'}
+            rv = c.post('/job', data=data)
+            self.assertEqual(rv.status_code, 400)
+            self.assertIn(b'Please upload valid SAXS profile', rv.data)
+
+            # Empty SAXS file
+            data = {'modelsnumber': '100', 'units': 'unknown',
+                    'pdbfile': open(pdbf, 'rb'),
+                    'saxsfile': open(emptyf, 'rb'),
+                    'hingefile': open(linkf, 'rb'), 'jobname': 'foobar'}
+            rv = c.post('/job', data=data)
+            self.assertEqual(rv.status_code, 400)
+            self.assertIn(b'You have uploaded an empty SAXS profile', rv.data)
 
             # Successful submission (no email)
             data = {'modelsnumber': '100', 'units': 'unknown',
