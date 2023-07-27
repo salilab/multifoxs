@@ -37,6 +37,7 @@ perl %s/runMultiFoXS.pl %s >& multifoxs.log
 
         r = self.runnercls(script)
         r.set_sge_options('-l arch=lx-amd64,h_rt=300:00:00,mem_free=4G -p 0')
+        r.set_sge_name(self.name)
         return r
 
     def postprocess(self):
