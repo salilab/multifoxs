@@ -59,17 +59,22 @@ def handle_new_job():
 def handle_pdb(pdb_code, pdb_file, job):
     """Handle input PDB code or file. Return file name."""
     if pdb_file:
-        fname = 'input.pdb'
+        if pdb_file.filename.endswith('.cif'):
+            fname = 'input.cif'
+        else:
+            fname = 'input.pdb'
         full_fname = job.get_path(fname)
         pdb_file.save(full_fname)
-        saliweb.frontend.check_pdb(full_fname)
+        saliweb.frontend.check_pdb_or_mmcif(
+            full_fname, show_filename=os.path.basename(pdb_file.filename))
         return fname
     elif pdb_code:
-        fname = saliweb.frontend.get_pdb_chains(pdb_code, job.directory)
+        fname = saliweb.frontend.get_pdb_chains(
+            pdb_code, job.directory, formats=["PDB", "MMCIF", "IHM"])
         return os.path.basename(fname)
     else:
         raise InputValidationError("Error in protein input: please specify "
-                                   "PDB code or upload file")
+                                   "PDB code or upload PDB/mmCIF file")
 
 
 def handle_uploaded_file(fh, job, output_file, description,
