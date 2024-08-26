@@ -1,8 +1,9 @@
 Import('env')
 
-env.InstallHTML(['1fguA.pdb', '1fguA_iq.dat', '1fguA_linkers.txt',
-                 'ligase.pdb', 'ligase_iq.dat', 'ligase_linkers.txt',
-                 'prion.pdb', 'prion_iq.dat', 'prion_linkers.txt'])
+env.InstallHTML(['1fguA.pdb', '1fguA.cif', '1fguA_iq.dat', '1fguA_linkers.txt',
+                 'ligase.pdb', 'ligase.cif', 'ligase_iq.dat',
+                 'ligase_linkers.txt',
+                 'prion.pdb', 'prion.cif', 'prion_iq.dat', 'prion_linkers.txt'])
 
 env.InstallHTML(['css/multifoxs.css'], 'css')
 env.InstallHTML(['img/logo.png', 'img/logo2.gif', 'img/zoom_out_icon.png',
