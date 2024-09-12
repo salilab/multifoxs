@@ -62,7 +62,7 @@ chomp $flexresnum;
 if($flexresnum > 15) { $cmd .= " -a 10"; }
 print "$cmd\n";
 `$cmd`;
-if(not -e "nodes1.pdb") {
+if(not -e "nodes1.pdb" and not -e "nodes1.cif") {
   print "ERROR: RRT generated no conformations\n";
   exit;
 }
@@ -70,11 +70,13 @@ if(not -e "nodes1.pdb") {
 
 # STEP 2: run FoXS
 for(my $i = 1; $i < 110; $i++) {
-  my $nodes_file = "nodes".$i.".pdb";
-  if(-e $nodes_file) {
-    $cmd = "foxs -m 2 -p $nodes_file";
-    print "$cmd\n";
-    `$cmd`;
+  for my $ext ("pdb", "cif") {
+    my $nodes_file = "nodes${i}.${ext}";
+    if(-e $nodes_file) {
+      $cmd = "foxs -m 2 -p $nodes_file";
+      print "$cmd\n";
+      `$cmd`;
+    }
   }
 } 
 # run FoXS for input PDB
@@ -83,7 +85,7 @@ print "$cmd\n";
 `$cmd`;     
 
 # STEP 3: run MultiFoXS
-`ls nodes*.pdb.dat > filenames`;
+`ls nodes*.{cif,pdb}.dat > filenames`;
 $cmd = "multi_foxs $saxs_file filenames -s 5 -k 1000 --max_c2 4.0 -u $unit_option";
 print "$cmd\n";
 `$cmd`;
@@ -92,11 +94,13 @@ print "$cmd\n";
 # STEP 4: calculate Rg
 `rm -f rg.out; touch rg.out`;
 for(my $i = 1; $i < 110; $i++) {
-  my $nodes_file = "nodes".$i.".pdb";
-  if(-e $nodes_file) {
-    $cmd = "compute_rg -m 2 $nodes_file >> rg.out";
-    print "$cmd\n";
-    `$cmd`;
+  for my $ext ("pdb", "cif") {
+    my $nodes_file = "nodes".$i.".pdb";
+    if(-e $nodes_file) {
+      $cmd = "compute_rg -m 2 $nodes_file >> rg.out";
+      print "$cmd\n";
+      `$cmd`;
+    }
   }
 }
 `grep Rg rg.out | awk '{ print \$3}' > rg`;
@@ -104,8 +108,8 @@ for(my $i = 1; $i < 110; $i++) {
 # STEP 5: plots
 `$home/plotHistograms.pl 5 100 1 1`;
 
-`rm -f e?/e[2-9]?_?.pdb e?/e1[1-9]_?.pdb`;
-`zip conformations.zip nodes*.pdb`;
+`rm -f e?/e[2-9]?_?.{cif,pdb} e?/e1[1-9]_?.{cif,pdb}`;
+`zip conformations.zip nodes*.{cif,pdb}`;
 `zip -r multi_foxs.zip ensembles_size_?.txt multi_state_model_?_1_1.dat e? chis  chis.png  gnuplot.txt  hist  hist? hist.png  plotbar.plt`;
-`rm -f nodes*.pdb.dat`;
-`rm -f nodes?.pdb nodes??.pdb nodes???.pdb`;
+`rm -f nodes*.{cif,pdb}.dat`;
+`rm -f nodes?.{cif,pdb} nodes??.{cif,pdb} nodes???.{cif,pdb}`;
